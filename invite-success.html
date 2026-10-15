@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You're Registered! — WFM Bag Charm Workshop</title>
+  <meta name="description" content="You're registered for the WFM Bag Charm Workshop on Friday, 20 November 2026.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- LOGO BAR -->
+  <header class="logo-bar">
+    <a href="index.html" class="logo-link" aria-label="Women of Faith Ministries — home">
+      <img src="images/wfm-logo.png" alt="Women of Faith Ministries logo">
+    </a>
+  </header>
+
+  <!-- SUCCESS SCREEN — invitee version -->
+  <main class="success-screen">
+
+    <div class="success-icon" aria-hidden="true">&#x2714;</div>
+
+    <h1>You're registered!</h1>
+    <p class="success-sub">
+      See you at SPH, UG Seminar Room. We'll have your materials ready when you arrive.
+    </p>
+
+    <!-- Event recap -->
+    <div class="event-card">
+      <div class="event-card-row">
+        <span class="emoji">&#x1F4C5;</span>
+        <span><strong>Friday, 20 November 2026</strong></span>
+      </div>
+      <div class="event-card-row">
+        <span class="emoji">&#x1F551;</span>
+        <span>10:00 AM &ndash; 1:00 PM</span>
+      </div>
+      <div class="event-card-row">
+        <span class="emoji">&#x1F4CD;</span>
+        <span>SPH, UG Seminar Room</span>
+      </div>
+    </div>
+
+    <!-- PAYMENT SECTION -->
+    <section class="payment-section" id="payment">
+      <h3>Transfer to Complete Your Registration</h3>
+      <p class="payment-intro">100% of net proceeds go directly to Women of Faith Ministries.</p>
+
+      <div class="payment-total">
+        <span class="payment-total-label">Total to transfer</span>
+        <span class="payment-total-amount" id="payment-amount">Rp 150.000</span>
+      </div>
+
+      <div class="bank-card">
+        <div class="bank-row">
+          <span class="bank-label">Bank</span>
+          <span class="bank-value">BCA</span>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Account number</span>
+          <div class="bank-account-row">
+            <span class="bank-value bank-account" id="bank-account">237-153-1329</span>
+            <button class="btn-copy" data-copy-target="bank-account" type="button">Copy</button>
+          </div>
+        </div>
+        <div class="bank-row">
+          <span class="bank-label">Account holder</span>
+          <span class="bank-value">IRNEZ HIDAYAT</span>
+        </div>
+      </div>
+
+      <p class="payment-note">
+        Already paid? You're all set &mdash; see you on 20 November.
+      </p>
+    </section>
+
+    <hr class="divider">
+
+    <!-- Add to calendar -->
+    <button id="add-to-calendar" class="btn-secondary calendar-btn">
+      &#x1F4C4; Add to Calendar
+    </button>
+
+    <hr class="divider">
+
+    <!-- Share section — now the invitee gets their own link -->
+    <div class="share-section">
+      <h3>Now it's your turn to invite.</h3>
+      <p>Share the craft love — pass it on to another SPH mom who'd enjoy a morning of making.</p>
+      <div class="share-url-row">
+        <input type="text" id="share-url" readonly aria-label="Your invite link">
+        <button class="btn-copy" data-copy-target="share-url" type="button">Copy Link</button>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- Footer -->
+    <div class="footer-contacts" style="text-align:center; margin-top: 32px;">
+      <p class="footer-contact-row" style="justify-content: center;">
+        <span class="footer-contact-name">Lodi</span>
+        <a href="https://wa.me/628179014050" class="footer-contact-link">+62 817 901 4050</a>
+      </p>
+      <p class="footer-contact-row" style="justify-content: center;">
+        <span class="footer-contact-name">Adrianne</span>
+        <a href="https://wa.me/62811928778" class="footer-contact-link">+62 811 928 778</a>
+      </p>
+    </div>
+
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
