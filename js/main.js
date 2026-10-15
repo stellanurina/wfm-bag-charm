@@ -15,7 +15,7 @@
 // =============================================
 // CONFIG — Replace these with your real values
 // =============================================
-const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_GOOGLE_SCRIPT_ID_HERE/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9MuOzZNzf7WfPkKVbmekkitIj1sLnfwudiqmQidqmPSASaM0xvSELkFH6LnPMBioC/exec';
 
 // Price is fixed: Rp 150.000 for 2 charms
 const FIXED_PRICE = 150000;
