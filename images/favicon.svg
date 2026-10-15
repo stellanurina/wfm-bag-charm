@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background circle in teal -->
+  <circle cx="32" cy="32" r="30" fill="#5CC5BA"/>
+  <!-- WFM letters in white -->
+  <text
+    x="32"
+    y="42"
+    font-family="Nunito, Arial, sans-serif"
+    font-size="20"
+    font-weight="800"
+    text-anchor="middle"
+    fill="#FFFFFF"
+    letter-spacing="0.5"
+  >WFM</text>
+</svg>
