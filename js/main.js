@@ -177,7 +177,6 @@ function validateForm(form) {
   // Required fields
   const requiredFields = [
     { id: 'name', message: 'Please enter your name.' },
-    { id: 'whatsapp', message: 'Please enter your WhatsApp number so we can confirm your spot.' },
     { id: 'inviting_friend', message: 'Please let us know if you\'re inviting a friend.' }
   ];
 
@@ -190,26 +189,6 @@ function validateForm(form) {
       valid = false;
     }
   });
-
-  // WhatsApp basic validation: at least 6 digits, allowing spaces, dashes, parens, plus
-  const whatsappEl = document.getElementById('whatsapp');
-  if (whatsappEl && whatsappEl.value) {
-    const digits = whatsappEl.value.replace(/\D/g, '');
-    if (digits.length < 6) {
-      showError(whatsappEl, 'That doesn\'t look like a valid phone number.');
-      valid = false;
-    }
-  }
-
-  // Email format check if provided
-  const emailEl = document.getElementById('email');
-  if (emailEl && emailEl.value && emailEl.value.trim()) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(emailEl.value.trim())) {
-      showError(emailEl, 'Please enter a valid email address.');
-      valid = false;
-    }
-  }
 
   return valid;
 }
@@ -267,8 +246,6 @@ function setupForm() {
 
     const formData = {
       name: nameValue,
-      whatsapp: document.getElementById('whatsapp') ? document.getElementById('whatsapp').value.trim() : '',
-      email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
       charmCount: FIXED_CHARM_COUNT,
       charmPrice: FIXED_PRICE,
       invitingFriend: document.querySelector('input[name="inviting_friend"]:checked')
