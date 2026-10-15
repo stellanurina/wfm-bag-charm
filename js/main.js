@@ -96,7 +96,7 @@ function initInvitePage() {
   // Update hero subline dynamically
   const heroSub = document.getElementById('hero-inviter-sub');
   if (heroSub) {
-    heroSub.textContent = `${capitalize(inviterName)} thought you'd love this — a creative Sunday morning of personalized paracord bag charm making, hosted by Women of Faith Ministries. 100% of net proceeds support WFM.`;
+    heroSub.textContent = `${capitalize(inviterName)} thought you'd love this — a creative Friday morning of personalized paracord bag charm making, hosted by Women of Faith Ministries. 100% of net proceeds support WFM.`;
   }
 }
 
@@ -177,6 +177,7 @@ function validateForm(form) {
   // Required fields
   const requiredFields = [
     { id: 'name', message: 'Please enter your name.' },
+    { id: 'whatsapp', message: 'Please enter your WhatsApp number so we can confirm your spot.' },
     { id: 'inviting_friend', message: 'Please let us know if you\'re inviting a friend.' }
   ];
 
@@ -189,6 +190,26 @@ function validateForm(form) {
       valid = false;
     }
   });
+
+  // WhatsApp basic validation: at least 6 digits, allowing spaces, dashes, parens, plus
+  const whatsappEl = document.getElementById('whatsapp');
+  if (whatsappEl && whatsappEl.value) {
+    const digits = whatsappEl.value.replace(/\D/g, '');
+    if (digits.length < 6) {
+      showError(whatsappEl, 'That doesn\'t look like a valid phone number.');
+      valid = false;
+    }
+  }
+
+  // Email format check if provided
+  const emailEl = document.getElementById('email');
+  if (emailEl && emailEl.value && emailEl.value.trim()) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(emailEl.value.trim())) {
+      showError(emailEl, 'Please enter a valid email address.');
+      valid = false;
+    }
+  }
 
   return valid;
 }
@@ -246,6 +267,8 @@ function setupForm() {
 
     const formData = {
       name: nameValue,
+      whatsapp: document.getElementById('whatsapp') ? document.getElementById('whatsapp').value.trim() : '',
+      email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
       charmCount: FIXED_CHARM_COUNT,
       charmPrice: FIXED_PRICE,
       invitingFriend: document.querySelector('input[name="inviting_friend"]:checked')
@@ -274,44 +297,33 @@ function setupForm() {
 }
 
 // =============================================
-// ADD TO CALENDAR — .ics generation
+// ADD TO CALENDAR — Google Calendar link
 // =============================================
 function setupCalendarButton() {
   const btn = document.getElementById('add-to-calendar');
   if (!btn) return;
 
-  btn.addEventListener('click', function () {
-    generateICS();
-  });
-}
+  // Event details for Google Calendar
+  const eventTitle = 'Charmingly Yours — WFM Bag Charm Workshop';
+  const eventDetails = 'A hands-on Friday morning of crafting personalized paracord bag charms. Hosted by Women of Faith Ministries. 100% of net proceeds support WFM.';
+  const eventLocation = 'SPH, UG Seminar Room';
 
-function generateICS() {
-  // Event: Sunday, 20 November 2026, 10:00 AM – 1:00 PM (Jakarta time, UTC+7)
-  // In .ics format, use local time without Z suffix for floating time
-  const start = '20261120T100000';
-  const end   = '20261120T130000';
+  // Friday 20 November 2026, 10:00 AM – 1:00 PM (Jakarta time, UTC+7)
+  // Google Calendar uses YYYYMMDDTHHMMSSZ format (UTC)
+  // 10:00 WIB = 03:00 UTC, 13:00 WIB = 06:00 UTC
+  const startUtc = '20261120T030000Z';
+  const endUtc   = '20261120T060000Z';
 
-  const icsContent = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//WFM Bag Charm Workshop//EN',
-    'BEGIN:VEVENT',
-    'DTSTART:' + start,
-    'DTEND:' + end,
-    'SUMMARY:Charmingly Yours — WFM Bag Charm Workshop',
-    'DESCRIPTION:A hands-on Sunday morning of crafting personalized paracord bag charms. Hosted by Women of Faith Ministries. 100% of net proceeds support WFM.',
-    'LOCATION:UG Seminar Room\\, SPH',
-    'END:VEVENT',
-    'END:VCALENDAR'
-  ].join('\r\n');
+  const googleCalendarUrl =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=' + encodeURIComponent(eventTitle) +
+    '&dates=' + startUtc + '/' + endUtc +
+    '&details=' + encodeURIComponent(eventDetails) +
+    '&location=' + encodeURIComponent(eventLocation);
 
-  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'wfm-bag-charm-workshop.ics';
-  link.click();
-  URL.revokeObjectURL(url);
+  btn.setAttribute('href', googleCalendarUrl);
+  btn.setAttribute('target', '_blank');
+  btn.setAttribute('rel', 'noopener noreferrer');
 }
 
 // =============================================
