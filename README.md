@@ -2,7 +2,7 @@
 
 A registration page for Women of Faith Ministries' paracord bag charm workshop for Moms of SPH.
 
-**Event:** Friday, 20 November 2026, 10:00 AM – 1:00 PM, SPH, UG Seminar Room
+**Event:** Friday, 20 November 2026, 10:00 AM – 1:00 PM, SPH<BR>UG Seminar Room
 **Price:** Rp 150.000 (2 bag charms to make and take home; extras Rp 50.000 each on the day)
 **Cause:** 100% of net proceeds support WFM
 

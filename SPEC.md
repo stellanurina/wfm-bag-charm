@@ -14,7 +14,7 @@
 |---|---|
 | Date | Friday, 20 November 2026 |
 | Time | 10:00 AM – 1:00 PM |
-| Venue | SPH, UG Seminar Room (Sekolah Pelita Harapan) |
+| Venue | SPH<BR>UG Seminar Room (Sekolah Pelita Harapan) |
 | Audience | Moms of SPH |
 | Host | Women of Faith Ministries |
 | Cost | Rp 150.000 (includes 2 bag charms) |
