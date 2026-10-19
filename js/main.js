@@ -274,6 +274,8 @@ function setupForm() {
 
     const formData = {
       name: nameValue,
+      whatsapp: document.getElementById('whatsapp') ? document.getElementById('whatsapp').value.trim() : '',
+      email: document.getElementById('email') ? document.getElementById('email').value.trim() : '',
       charmCount: FIXED_CHARM_COUNT,
       charmPrice: FIXED_PRICE,
       invitingFriend: document.querySelector('input[name="inviting_friend"]:checked')
