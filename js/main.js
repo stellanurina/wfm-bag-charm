@@ -66,12 +66,19 @@ function getShareUrl(name) {
 }
 
 /**
- * Get the base URL (origin + path, without filename)
+ * Get the base URL (origin + path, without filename).
+ *
+ * Strips everything from the last "/" onwards, so:
+ *   "/index.html"              -> "/"
+ *   "/some/folder/index.html"  -> "/some/folder/"
+ *   "/"                        -> "/"
+ * If the path has no "/" at all (rare), fall back to origin.
  */
 function getBaseUrl() {
-  const path = window.location.pathname;
-  const lastSlash = path.lastIndexOf('/');
-  return window.location.origin + (lastSlash > 0 ? path.substring(0, lastSlash + 1) : path);
+  const path = window.location.pathname || '/';
+  // Replace the trailing filename (anything that isn't "/" up to end) with "".
+  const dir = path.replace(/[^/]*$/, '');
+  return window.location.origin + dir;
 }
 
 // =============================================
