@@ -79,9 +79,55 @@
       -ms-overflow-style: none;
       scrollbar-width: none;
     }
+
+    /* ---------- Printable door list (More → Print door list) ---------- */
+    #print-sheet { display: none; }
+    @media print {
+      @page { size: A4 portrait; margin: 11mm 11mm 12mm; }
+      html, body { background: #fff !important; }
+      body > *:not(#print-sheet) { display: none !important; }
+      #print-sheet { display: block; color: #2D3748; font-family: 'Nunito', 'Helvetica Neue', Arial, sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+    .ps-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; padding-bottom: 8px; border-bottom: 2px solid #E06D9B; }
+    .ps-kicker { font-size: 8.5pt; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #3AA398; }
+    .ps-title { font-size: 20pt; font-weight: 800; line-height: 1.1; margin-top: 2px; }
+    .ps-title em { font-family: 'Playfair Display', Georgia, serif; font-weight: 500; color: #E06D9B; }
+    .ps-meta { font-size: 9pt; color: #64748B; margin-top: 3px; }
+    .ps-stamp { text-align: right; font-size: 8pt; color: #64748B; line-height: 1.5; }
+    .ps-stats { display: flex; gap: 8px; margin: 9px 0 7px; }
+    .ps-stat { flex: 1; border: 1px solid #F5D0E2; border-radius: 8px; padding: 5px 9px; background: #FDF2F8; }
+    .ps-stat b { display: block; font-size: 14pt; line-height: 1.1; }
+    .ps-stat span { font-size: 7.5pt; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #64748B; }
+    .ps-stat.paid { background: #E6F7F5; border-color: #A7DED8; } .ps-stat.paid b { color: #3AA398; }
+    .ps-stat.due { background: #FEF3C7; border-color: #F2C98A; } .ps-stat.due b { color: #B86F17; }
+    .ps-howto { font-size: 8.5pt; color: #64748B; margin: 0 0 6px; }
+    .ps-table { width: 100%; border-collapse: collapse; font-size: 10pt; }
+    .ps-table thead th { font-size: 7.5pt; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #64748B; text-align: left; padding: 4px 6px; border-bottom: 1.5px solid #2D3748; }
+    .ps-table td { padding: 4.5px 6px; border-bottom: 1px solid #F1E3EA; vertical-align: middle; }
+    .ps-table tr { page-break-inside: avoid; break-inside: avoid; }
+    .ps-table tr.due td { background: #FFFBEB; }
+    .ps-table tr.due td:first-child { box-shadow: inset 3px 0 0 #D98A2B; }
+    .ps-num { width: 20px; color: #94A3B8; font-size: 8pt; text-align: right; }
+    .ps-box { width: 13px; height: 13px; border: 1.5px solid #2D3748; border-radius: 3px; display: inline-block; vertical-align: middle; }
+    .ps-name { font-weight: 800; font-size: 10.5pt; }
+    .ps-wa { font-size: 8pt; color: #64748B; }
+    .ps-pill { display: inline-block; font-size: 8pt; font-weight: 800; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+    .ps-pill.paid { background: #E6F7F5; color: #3AA398; border: 1px solid #A7DED8; }
+    .ps-pill.due { background: #FEF3C7; color: #B86F17; border: 1px solid #F2C98A; }
+    .ps-methods { font-size: 8pt; color: #475569; white-space: nowrap; margin-top: 3px; }
+    .ps-methods .ps-box { width: 10px; height: 10px; border-width: 1.2px; margin: 0 2px 0 6px; }
+    .ps-methods .ps-box:first-child { margin-left: 0; }
+    .ps-line { display: inline-block; min-width: 70px; border-bottom: 1px solid #CBD5E1; height: 12px; }
+    .ps-bday { font-size: 9pt; font-weight: 700; }
+    .ps-section { font-size: 9pt; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #E06D9B; margin: 14px 0 4px; }
+    .ps-walkin td { height: 26px; }
+    .ps-foot { margin-top: 10px; font-size: 8pt; color: #94A3B8; display: flex; justify-content: space-between; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-pinkPrimary/40 selection:text-slateDark">
+
+  <!-- Printable door list (filled in by printDoorList) -->
+  <div id="print-sheet" aria-hidden="true"></div>
 
   <!-- Toast Notification Container -->
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
@@ -134,7 +180,7 @@
           </div>
 
           <!-- Mobile Kiosk Quick Toggle -->
-          <button onclick="switchMode('kiosk')" class="lg:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blushSoft hover:bg-pinkPrimary/30 text-pinkDeep text-xs font-bold transition shrink-0">
+          <button onclick="switchMode('kiosk')" data-kiosk-entry class="hidden lg:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blushSoft hover:bg-pinkPrimary/30 text-pinkDeep text-xs font-bold transition shrink-0">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
             Kiosk
           </button>
@@ -143,7 +189,7 @@
         <!-- Mode Tabs & Primary Action Buttons -->
         <div class="flex flex-wrap items-center gap-2">
           <!-- Mode Switcher Pill -->
-          <div class="inline-flex p-1 rounded-xl bg-blushBg border border-borderPink">
+          <div data-kiosk-entry class="hidden inline-flex p-1 rounded-xl bg-blushBg border border-borderPink">
             <button id="tab-host" onclick="switchMode('host')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition bg-white text-slateDark shadow-2xs">
               Host Check-In Desk
             </button>
@@ -152,7 +198,7 @@
             </button>
           </div>
 
-          <div class="h-6 w-px bg-borderPink hidden sm:block"></div>
+          <div data-kiosk-entry class="h-6 w-px bg-borderPink hidden"></div>
 
           <!-- Add Walk-In -->
           <button onclick="openWalkInModal(false)" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-pinkDeep hover:bg-pinkDeep/90 text-white text-xs sm:text-sm font-bold shadow-2xs transition active:scale-[0.99]">
@@ -160,24 +206,32 @@
             <span>+ Walk-In</span>
           </button>
 
-          <!-- Bulk Mark Paid Toggle -->
-          <button id="bulk-mode-btn" onclick="toggleBulkMode()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-tealLight border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition">
-            <svg class="w-4 h-4 text-tealDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Bulk Paid</span>
-          </button>
-
-          <!-- Import CSV -->
-          <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition cursor-pointer" title="Import registrations from CSV">
-            <svg class="w-4 h-4 text-pinkDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            <span class="hidden sm:inline">Import</span>
-            <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden" />
-          </label>
-
-          <!-- Export CSV -->
-          <button onclick="exportUpdatedCSV()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition" title="Download updated CSV">
-            <svg class="w-4 h-4 text-tealDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-            <span>Export CSV</span>
-          </button>
+          <!-- Everything not needed at the door lives under "More" -->
+          <div class="relative" id="more-menu-wrap">
+            <button id="more-menu-btn" onclick="toggleMoreMenu(event)" aria-haspopup="true" aria-expanded="false" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition">
+              <span class="text-base leading-none">⋯</span>
+              <span>More</span>
+            </button>
+            <div id="more-menu" class="hidden absolute right-0 mt-2 w-60 bg-white rounded-2xl border border-borderPink shadow-lg p-1.5 z-40">
+              <button onclick="closeMoreMenu(); printDoorList()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer">
+                <span class="w-5 text-center">🖨️</span><span>Print door list</span>
+              </button>
+              <button id="bulk-mode-btn" onclick="closeMoreMenu(); toggleBulkMode()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer">
+                <span class="w-5 text-center text-tealDeep">✓</span><span>Bulk mark paid</span>
+              </button>
+              <button onclick="closeMoreMenu(); exportUpdatedCSV()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer">
+                <span class="w-5 text-center">⬇️</span><span>Export CSV</span>
+              </button>
+              <label class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer" title="Import registrations from CSV">
+                <span class="w-5 text-center">⬆️</span><span>Import CSV</span>
+                <input type="file" accept=".csv" onchange="closeMoreMenu(); handleCSVImport(event)" class="hidden" />
+              </label>
+              <div class="my-1 border-t border-borderPink"></div>
+              <button onclick="closeMoreMenu(); openSheetSetupModal()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer">
+                <span class="w-5 text-center">⚙️</span><span>Sheet setup</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -216,10 +270,6 @@
             <span>Sync Now</span>
           </button>
 
-          <button onclick="openSheetSetupModal()" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white hover:bg-blushBg border border-borderPink text-slateDark font-bold transition">
-            <svg class="w-3.5 h-3.5 text-pinkDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span>Sheet Setup</span>
-          </button>
         </div>
       </div>
     </div>
@@ -326,6 +376,7 @@
           <input
             type="text"
             id="search-input"
+            autofocus
             oninput="handleSearch(this.value)"
             placeholder="Search by Name, WhatsApp, or Email..."
             class="w-full pl-11 pr-10 py-2.5 rounded-xl bg-blushBg border border-borderPink focus:border-pinkDeep focus:ring-2 focus:ring-pinkPrimary/40 outline-none text-sm font-medium transition"
@@ -337,12 +388,12 @@
 
         <!-- Show Test Row Toggle & Hidden Reset -->
         <div class="flex flex-wrap items-center gap-3">
-          <label class="inline-flex items-center gap-2 text-xs font-bold text-slateDark cursor-pointer select-none bg-blushBg px-3 py-2 rounded-xl border border-borderPink">
+          <label class="hidden inline-flex items-center gap-2 text-xs font-bold text-slateDark cursor-pointer select-none bg-blushBg px-3 py-2 rounded-xl border border-borderPink">
             <input type="checkbox" id="show-test-checkbox" onchange="toggleShowTest(this.checked)" class="rounded text-pinkDeep focus:ring-pinkDeep border-borderPink w-4 h-4 cursor-pointer" />
             <span>Show Test Row</span>
           </label>
 
-          <button onclick="openResetConfirmModal()" class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-borderPink hover:bg-blushBg text-xs font-bold text-slateMuted hover:text-slateDark transition" title="Restore default list with 11 paid guests">
+          <button onclick="openResetConfirmModal()" class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-borderPink hover:bg-blushBg text-xs font-bold text-slateMuted hover:text-slateDark transition" title="Restore the built-in guest list">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span>Reset Defaults</span>
           </button>
@@ -479,11 +530,11 @@
           <div class="text-xs font-extrabold text-amberWarm uppercase tracking-wider">Payment Verification</div>
           <p class="text-xs text-slateDark font-medium">Your registration currently shows <strong>Unpaid</strong>. Have you already transferred or are you paying at the desk today?</p>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
-            <select id="kiosk-payment-status" class="px-3 py-2.5 rounded-xl bg-white border border-borderPink text-xs font-bold text-slateDark outline-none">
+            <select id="kiosk-payment-status" onchange="toggleKioskPaymentMethod()" class="px-3 py-2.5 rounded-xl bg-white border border-borderPink text-xs font-bold text-slateDark outline-none">
               <option value="Unpaid">Paying at Desk Now (Unpaid)</option>
               <option value="Paid">Already Paid / Paid at Desk ✓</option>
             </select>
-            <select id="kiosk-payment-method" class="px-3 py-2.5 rounded-xl bg-white border border-borderPink text-xs font-bold text-slateDark outline-none">
+            <select id="kiosk-payment-method" class="hidden px-3 py-2.5 rounded-xl bg-white border border-borderPink text-xs font-bold text-slateDark outline-none">
               <option value="Bank Transfer">Bank Transfer</option>
               <option value="QRIS">QRIS</option>
               <option value="Cash">Cash</option>
@@ -532,11 +583,12 @@
           <p id="kiosk-success-msg" class="text-sm text-slateMuted max-w-sm mx-auto"></p>
         </div>
         <div id="kiosk-success-payment-note" class="hidden p-3.5 rounded-2xl bg-amberLight border border-amberWarm/30 text-amberWarm text-xs font-extrabold max-w-sm mx-auto">
-          Please settle Rp 150.000 at the host desk before picking your charms.
+          Please settle <span id="kiosk-success-amount">Rp 150.000</span> at the host desk before picking your charms.
         </div>
         <button onclick="kioskBackToSearch()" class="px-6 py-3 rounded-xl bg-slateDark hover:bg-slateDark/90 text-white text-sm font-extrabold transition">
           Done (Next Guest)
         </button>
+        <p id="kiosk-auto-return" class="text-[11px] text-slateMuted font-semibold"></p>
       </div>
     </div>
 
@@ -600,6 +652,10 @@
             </button>
           </div>
 
+          <div id="modal-due-banner" class="hidden p-3 rounded-xl bg-amberLight border border-amberWarm/40 text-amberWarm text-xs font-extrabold">
+            <span id="modal-due-text">Not paid yet — collect Rp 150.000, then tap Paid ✓ and pick the method.</span>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
             <div>
               <label class="block text-[11px] font-bold text-slateMuted mb-1">Payment Method</label>
@@ -639,7 +695,7 @@
           <button onclick="saveDoorModal(false)" class="flex-1 py-3 px-4 rounded-xl bg-blushSoft hover:bg-pinkPrimary/30 text-slateDark text-sm font-extrabold transition">
             Save Details Only
           </button>
-          <button onclick="saveDoorModal(true)" class="flex-1 py-3 px-4 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-sm font-extrabold shadow-sm transition">
+          <button id="modal-checkin-btn" onclick="saveDoorModal(true)" class="flex-1 py-3 px-4 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-sm font-extrabold shadow-sm transition">
             Save & Check In ✓
           </button>
         </div>
@@ -655,7 +711,7 @@
       <div class="px-6 py-4 bg-blushBg border-b border-borderPink flex items-center justify-between">
         <div>
           <span class="text-[11px] font-extrabold uppercase tracking-wider text-pinkDeep">New Registration</span>
-          <h3 class="text-xl font-extrabold text-slateDark">Add Walk-In Guest</h3>
+          <h3 id="walkin-title" class="text-xl font-extrabold text-slateDark">Add Walk-In Guest</h3>
         </div>
         <button onclick="closeWalkInModal()" class="p-2 rounded-xl hover:bg-blushSoft text-slateMuted hover:text-slateDark transition">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
@@ -688,7 +744,7 @@
             </select>
           </div>
 
-          <div>
+          <div id="walkin-method-wrap">
             <label class="block text-xs font-extrabold text-slateDark mb-1">Payment Method</label>
             <select id="walkin-method" class="w-full px-3.5 py-2.5 rounded-xl bg-blushBg border border-borderPink focus:border-pinkDeep outline-none text-sm font-bold">
               <option value="QRIS">QRIS</option>
@@ -713,7 +769,7 @@
         </div>
 
         <!-- Payment & Immediate Check-in -->
-        <div class="p-3.5 rounded-2xl bg-blushBg border border-borderPink flex flex-wrap items-center justify-between gap-3">
+        <div id="walkin-host-options" class="p-3.5 rounded-2xl bg-blushBg border border-borderPink flex flex-wrap items-center justify-between gap-3">
           <label class="inline-flex items-center gap-2 text-xs font-extrabold text-slateDark cursor-pointer">
             <input type="checkbox" id="walkin-paid" checked class="rounded text-tealDeep focus:ring-tealDeep w-4 h-4" />
             <span>Paid ✓</span>
@@ -806,8 +862,8 @@
       <h3 id="confirm-modal-title" class="text-xl font-extrabold text-slateDark">Confirm Action</h3>
       <p id="confirm-modal-desc" class="text-sm text-slateMuted"></p>
       <div id="confirm-pin-wrapper" class="hidden">
-        <label class="block text-xs font-extrabold text-slateDark mb-1">Enter Host PIN (Default: 1234)</label>
-        <input type="password" id="confirm-pin-input" maxlength="6" placeholder="1234" class="w-full px-3.5 py-2.5 rounded-xl bg-blushBg border border-borderPink text-center text-lg tracking-widest font-extrabold outline-none focus:border-pinkDeep" />
+        <label class="block text-xs font-extrabold text-slateDark mb-1">Enter Host PIN</label>
+        <input type="password" id="confirm-pin-input" maxlength="6" inputmode="numeric" placeholder="••••" class="w-full px-3.5 py-2.5 rounded-xl bg-blushBg border border-borderPink text-center text-lg tracking-widest font-extrabold outline-none focus:border-pinkDeep" />
       </div>
       <div class="flex justify-end gap-2.5 pt-2">
         <button onclick="closeConfirmModal()" class="px-4 py-2 rounded-xl bg-blushSoft hover:bg-pinkPrimary/30 text-xs font-extrabold text-slateDark transition">
@@ -819,6 +875,316 @@
       </div>
     </div>
   </div>
+
+  <!-- Apps Script source shown in "Sheet Setup" (kept as plain text so nothing needs escaping) -->
+  <script type="text/plain" id="apps-script-source">
+/**
+ * WFM Bag Charm Workshop ("Charmingly Yours") — Google Sheets Sync Bridge
+ * Follows the exact 15-column layout (A:O) of "Sheet1" and "Check In":
+ * A: Timestamp | B: Name | C: WhatsApp | D: Email | E: Charm Count | F: Charm Price
+ * G: Inviting a Friend | H: Referred By | I: Invite Share URL
+ * J: Payment Status | K: Payment Method | L: Birthday | M: Checked In | N: Check-In Time | O: Notes
+ *
+ * Fixes vs previous version:
+ *  - Birthday / Check-In Time / Timestamp cells that Sheets auto-converted to Dates are
+ *    returned as clean text ("2 Jul 1986", "10:15"), so the site can actually read them.
+ *  - Birthday, Check-In Time and WhatsApp are written as plain text so Sheets doesn't
+ *    turn "2 Jul 1986" into a date or "08128869787" into a number.
+ *  - An empty birthday / note / payment method from the site no longer wipes a real
+ *    value already in the sheet.
+ *  - Payment Method is returned as it really is in the sheet (no invented "Bank Transfer").
+ *  - Rows are matched by the original registration name in the Invite Share URL too, so a
+ *    guest whose name was tidied up in the sheet (e.g. "Imelda N." -> "Imelda Natalia")
+ *    updates her real row instead of creating a fake walk-in row.
+ *  - A registrant who is in Sheet1 but missing from "Check In" is copied from her real
+ *    Sheet1 row (real timestamp, referral, invite URL) instead of a made-up walk-in row.
+ */
+
+const REG_SHEET_NAME = 'Sheet1';
+const CHECKIN_SHEET_NAME = 'Check In';
+const TZ = 'Asia/Jakarta';
+
+const COL = { TS: 1, NAME: 2, WA: 3, EMAIL: 4, COUNT: 5, PRICE: 6, INVITE: 7, REF: 8, URL: 9,
+              PAY: 10, METHOD: 11, BDAY: 12, CHECKED: 13, TIME: 14, NOTES: 15 };
+
+function normalizePhone_(val) {
+  let digits = String(val || '').replace(/\D/g, '');
+  if (digits.startsWith('0')) digits = '62' + digits.slice(1);
+  if (digits.startsWith('8')) digits = '62' + digits;
+  return digits;
+}
+
+// Original registration name, taken from ".../invite.html?name=Imelda%20N."
+function urlName_(url) {
+  const m = String(url || '').match(/[?&]name=([^&#]*)/);
+  if (!m) return '';
+  try { return decodeURIComponent(m[1].replace(/\+/g, ' ')).trim(); } catch (e) { return m[1].trim(); }
+}
+
+function isDate_(v) {
+  return Object.prototype.toString.call(v) === '[object Date]' && !isNaN(v.getTime());
+}
+
+function text_(v) {
+  return String(v === null || v === undefined ? '' : v).trim();
+}
+
+// Birthday cell -> "2 Jul 1986" / "12 Nov" (Sheets often stores these as real Dates)
+function birthdayText_(v) {
+  if (!isDate_(v)) return text_(v);
+  const y = Number(Utilities.formatDate(v, TZ, 'yyyy'));
+  // "12 Nov" typed without a year gets the current year from Sheets — drop it
+  return y >= 2021 ? Utilities.formatDate(v, TZ, 'd MMM') : Utilities.formatDate(v, TZ, 'd MMM yyyy');
+}
+
+// Check-In Time cell -> "10:15"
+function timeText_(v) {
+  return isDate_(v) ? Utilities.formatDate(v, TZ, 'HH:mm') : text_(v);
+}
+
+// Timestamp cell -> "2026-10-19 16:31"
+function stampText_(v) {
+  return isDate_(v) ? Utilities.formatDate(v, TZ, 'yyyy-MM-dd HH:mm') : text_(v);
+}
+
+function getOrCreateCheckInSheet_(ss) {
+  let sheet = ss.getSheetByName(CHECKIN_SHEET_NAME);
+  if (!sheet) {
+    sheet = ss.insertSheet(CHECKIN_SHEET_NAME);
+  }
+  if (sheet.getLastRow() === 0) {
+    sheet.appendRow([
+      'Timestamp', 'Name', 'WhatsApp', 'Email', 'Charm Count', 'Charm Price',
+      'Inviting a Friend', 'Referred By', 'Invite Share URL',
+      'Payment Status', 'Payment Method', 'Birthday', 'Checked In', 'Check-In Time', 'Notes'
+    ]);
+  }
+  return sheet;
+}
+
+// Keep WhatsApp, Birthday and Check-In Time as plain text so Sheets doesn't convert them
+function setTextFormats_(sheet, row) {
+  sheet.getRange(row, COL.WA).setNumberFormat('@');
+  sheet.getRange(row, COL.BDAY).setNumberFormat('@');
+  sheet.getRange(row, COL.TIME).setNumberFormat('@');
+}
+
+/**
+ * Finds the row (1-based) for a guest. Order:
+ *  1. Name (sheet name OR original name in invite URL) + phone
+ *  2. Name alone
+ *  3. Phone alone, only if exactly one row has that phone (Eve & Maria Evelyn share one)
+ */
+function findRow_(data, name, phone) {
+  const target = String(name || '').trim().toLowerCase();
+  const names = i => [text_(data[i][COL.NAME - 1]).toLowerCase(), urlName_(data[i][COL.URL - 1]).toLowerCase()];
+
+  if (target) {
+    for (let i = 1; i < data.length; i++) {
+      if (names(i).indexOf(target) !== -1 && (!phone || normalizePhone_(data[i][COL.WA - 1]) === phone)) return i + 1;
+    }
+    for (let i = 1; i < data.length; i++) {
+      if (names(i).indexOf(target) !== -1) return i + 1;
+    }
+  }
+  if (phone) {
+    const hits = [];
+    for (let i = 1; i < data.length; i++) {
+      if (normalizePhone_(data[i][COL.WA - 1]) === phone) hits.push(i + 1);
+    }
+    if (hits.length === 1) return hits[0];
+  }
+  return -1;
+}
+
+function rowToGuest_(r, rowNumber) {
+  const charmCount = Number(r[COL.COUNT - 1]) || 2;
+  const rawPrice = Number(String(r[COL.PRICE - 1] || '').replace(/[^0-9]/g, ''));
+  const charmPrice = rawPrice >= 10000 ? rawPrice : (150000 + Math.max(0, charmCount - 2) * 50000);
+  const payStatus = text_(r[COL.PAY - 1]).toLowerCase() === 'paid' ? 'Paid' : 'Unpaid';
+  const checked = r[COL.CHECKED - 1];
+
+  return {
+    rowNumber: rowNumber,
+    registeredAt: stampText_(r[COL.TS - 1]),
+    name: text_(r[COL.NAME - 1]),
+    registeredName: urlName_(r[COL.URL - 1]),
+    whatsapp: text_(r[COL.WA - 1]),
+    email: text_(r[COL.EMAIL - 1]),
+    charmCount: charmCount,
+    charmPrice: charmPrice,
+    inviteStatus: text_(r[COL.INVITE - 1]) || 'No, flying solo',
+    paymentStatus: payStatus,
+    paymentMethod: payStatus === 'Paid' ? text_(r[COL.METHOD - 1]) : '',
+    birthday: birthdayText_(r[COL.BDAY - 1]),
+    checkedIn: checked === true || text_(checked).toLowerCase() === 'yes' ? 'Yes' : 'No',
+    checkInTime: timeText_(r[COL.TIME - 1]),
+    notes: text_(r[COL.NOTES - 1])
+  };
+}
+
+// GET: Reads the 15-column "Check In" tab + any new signups from "Sheet1"
+function doGet(e) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const checkInSheet = getOrCreateCheckInSheet_(ss);
+  const regSheet = ss.getSheetByName(REG_SHEET_NAME);
+
+  const checkInData = checkInSheet.getDataRange().getValues();
+  const rows = [];
+  const seenPhonesAndNames = new Set();
+  const seenUrls = new Set();
+
+  for (let i = 1; i < checkInData.length; i++) {
+    const r = checkInData[i];
+    const name = text_(r[COL.NAME - 1]);
+    if (!name || name.toLowerCase() === 'name') continue;
+
+    seenPhonesAndNames.add(name.toLowerCase() + '|' + normalizePhone_(r[COL.WA - 1]));
+    const inviteUrl = text_(r[COL.URL - 1]);
+    if (inviteUrl) seenUrls.add(inviteUrl.toLowerCase());
+
+    rows.push(rowToGuest_(r, i + 1));
+  }
+
+  // Also include any brand-new registrations on Sheet1 not yet in Check In
+  if (regSheet) {
+    const regData = regSheet.getDataRange().getValues();
+    for (let i = 1; i < regData.length; i++) {
+      const r = regData[i];
+      const name = text_(r[COL.NAME - 1]);
+      if (!name || name.toLowerCase() === 'name') continue;
+
+      const inviteUrl = text_(r[COL.URL - 1]);
+      if (seenPhonesAndNames.has(name.toLowerCase() + '|' + normalizePhone_(r[COL.WA - 1]))) continue;
+      if (inviteUrl && seenUrls.has(inviteUrl.toLowerCase())) continue;
+
+      rows.push(rowToGuest_(r, i + 1));
+    }
+  }
+
+  return ContentService.createTextOutput(JSON.stringify({
+    status: 'ok',
+    syncedAt: new Date().toISOString(),
+    rows: rows
+  })).setMimeType(ContentService.MimeType.JSON);
+}
+
+// POST: Updates Check In columns E:F and J:O (matching your A:O headers)
+function doPost(e) {
+  const lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    const payload = JSON.parse(e.postData.contents);
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    // 1. Registrar Check-In / Payment / Birthday Update -> "Check In" tab
+    if (payload.action === 'checkin_update') {
+      const sheet = getOrCreateCheckInSheet_(ss);
+      const data = sheet.getDataRange().getValues();
+      const targetPhone = normalizePhone_(payload.whatsapp);
+
+      let rowIndex = findRow_(data, payload.name, targetPhone);
+
+      // Not in "Check In" yet? Copy her REAL registration row (A:I) from Sheet1 first.
+      if (rowIndex === -1) {
+        const regSheet = ss.getSheetByName(REG_SHEET_NAME);
+        if (regSheet) {
+          const regData = regSheet.getDataRange().getValues();
+          const regRow = findRow_(regData, payload.name, targetPhone);
+          if (regRow > 0) {
+            const src = regData[regRow - 1].slice(0, 9);
+            sheet.appendRow(src.concat(['Unpaid', '', '', 'No', '', '']));
+            rowIndex = sheet.getLastRow();
+            sheet.getRange(rowIndex, COL.WA).setNumberFormat('@').setValue(text_(src[COL.WA - 1]));
+          }
+        }
+      }
+
+      const charmCount = Number(payload.charmCount) || 2;
+      const charmPrice = Number(payload.charmPrice) || (150000 + Math.max(0, charmCount - 2) * 50000);
+      const isPaid = String(payload.paymentStatus || '').toLowerCase() === 'paid';
+      const isCheckedIn = payload.checkedIn === true || String(payload.checkedIn).toLowerCase() === 'yes';
+      const incomingBirthday = text_(payload.birthday);
+      const incomingNotes = text_(payload.notes);
+      const incomingMethod = text_(payload.paymentMethod);
+
+      if (rowIndex > 0) {
+        const current = sheet.getRange(rowIndex, 1, 1, 15).getValues()[0];
+
+        // Never wipe real sheet data with an empty value from the site
+        const birthday = incomingBirthday || birthdayText_(current[COL.BDAY - 1]);
+        const notes = incomingNotes || text_(current[COL.NOTES - 1]);
+        const payMethod = isPaid ? (incomingMethod || text_(current[COL.METHOD - 1])) : '';
+
+        setTextFormats_(sheet, rowIndex);
+        sheet.getRange(rowIndex, COL.COUNT, 1, 2).setValues([[charmCount, charmPrice]]);
+        sheet.getRange(rowIndex, COL.PAY, 1, 6).setValues([[
+          isPaid ? 'Paid' : 'Unpaid',
+          payMethod,
+          birthday,
+          isCheckedIn ? 'Yes' : 'No',
+          isCheckedIn ? text_(payload.checkInTime) : '',
+          notes
+        ]]);
+      } else {
+        // Genuine walk-in (not in Sheet1 or Check In) -> append full 15-column row (A:O)
+        sheet.appendRow([
+          new Date(),
+          payload.name || '',
+          '',
+          payload.email || '',
+          charmCount,
+          charmPrice,
+          payload.inviteStatus || 'Walk-In',
+          '',
+          '',
+          isPaid ? 'Paid' : 'Unpaid',
+          isPaid ? incomingMethod : '',
+          '',
+          isCheckedIn ? 'Yes' : 'No',
+          '',
+          incomingNotes
+        ]);
+        const newRow = sheet.getLastRow();
+        setTextFormats_(sheet, newRow);
+        sheet.getRange(newRow, COL.WA).setValue(text_(payload.whatsapp));
+        sheet.getRange(newRow, COL.BDAY).setValue(incomingBirthday);
+        sheet.getRange(newRow, COL.TIME).setValue(isCheckedIn ? text_(payload.checkInTime) : '');
+      }
+
+      return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: CHECKIN_SHEET_NAME, row: rowIndex }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    // 2. Main Landing Page Registration (wfm.stellas.digital) -> appends to both Sheet1 & Check In
+    const regRow = [
+      new Date(),
+      payload.name,
+      String(payload.whatsapp || ''),
+      payload.email || '',
+      payload.charmCount,
+      payload.charmPrice,
+      payload.invitingFriend,
+      payload.referredBy || '',
+      payload.inviteShareUrl || ''
+    ];
+    const regSheet = ss.getSheetByName(REG_SHEET_NAME);
+    regSheet.appendRow(regRow);
+    regSheet.getRange(regSheet.getLastRow(), COL.WA).setNumberFormat('@').setValue(String(payload.whatsapp || ''));
+
+    const ci = getOrCreateCheckInSheet_(ss);
+    ci.appendRow(regRow.concat(['Unpaid', '', '', 'No', '', '']));
+    setTextFormats_(ci, ci.getLastRow());
+    ci.getRange(ci.getLastRow(), COL.WA).setValue(String(payload.whatsapp || ''));
+
+    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: REG_SHEET_NAME }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+  </script>
 
   <script>
     // =========================================================================
@@ -838,186 +1204,10 @@
     // =========================================================================
     // 1. GOOGLE APPS SCRIPT TEMPLATE (Dedicated "Check In" Tab — Sheet1 Untouched)
     // =========================================================================
-    const GOOGLE_APPS_SCRIPT_TEMPLATE = `/**
- * WFM Bag Charm Workshop ("Charmingly Yours") — Google Sheets Sync Bridge
- * - Main landing page registrations -> appends to "Sheet1"
- * - Registrar check-ins, payments & birthdays -> syncs to "Check In" tab
- */
-
-const REG_SHEET_NAME = 'Sheet1';
-const CHECKIN_SHEET_NAME = 'Check In';
-
-function normalizePhone_(val) {
-  let digits = String(val || '').replace(/\\D/g, '');
-  if (digits.startsWith('0')) digits = '62' + digits.slice(1);
-  if (digits.startsWith('8')) digits = '62' + digits;
-  return digits;
-}
-
-function getOrCreateCheckInSheet_(ss) {
-  let sheet = ss.getSheetByName(CHECKIN_SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.insertSheet(CHECKIN_SHEET_NAME);
-  }
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      'Updated At', 'Name', 'WhatsApp', 'Payment Status',
-      'Payment Method', 'Birthday', 'Checked In', 'Check-In Time', 'Notes', 'Charm Count', 'Charm Price'
-    ]);
-  }
-  return sheet;
-}
-
-function doGet(e) {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const regSheet = ss.getSheetByName(REG_SHEET_NAME) || ss.getSheets()[0];
-  const regData = regSheet.getDataRange().getValues();
-  const checkInData = getOrCreateCheckInSheet_(ss).getDataRange().getValues();
-
-  const statusMap = {};
-  for (let i = 1; i < checkInData.length; i++) {
-    const r = checkInData[i];
-    const entry = {
-      paymentStatus: r[3] || '',
-      paymentMethod: r[4] || '',
-      birthday: r[5] || '',
-      checkedIn: r[6] || '',
-      checkInTime: r[7] || '',
-      notes: r[8] || '',
-      charmCount: r[9] || '',
-      charmPrice: r[10] || ''
-    };
-    if (r[1]) statusMap['name:' + String(r[1]).trim().toLowerCase()] = entry;
-    const phone = normalizePhone_(r[2]);
-    if (phone) statusMap['wa:' + phone] = entry;
-  }
-
-  const rows = [];
-  const seenNames = new Set();
-
-  for (let i = 1; i < regData.length; i++) {
-    const r = regData[i];
-    const name = String(r[1] || r[0] || '').trim();
-    if (!name || name.toLowerCase() === 'name') continue;
-    const rawWa = String(r[2] || r[1] || '').trim();
-    const phone = normalizePhone_(rawWa);
-    const match = statusMap['name:' + name.toLowerCase()] || (phone ? statusMap['wa:' + phone] : null) || {};
-    seenNames.add(name.toLowerCase());
-
-    rows.push({
-      rowNumber: i + 1,
-      name: name,
-      whatsapp: rawWa,
-      email: String(r[3] || '').trim(),
-      charmCount: Number(match.charmCount || r[4]) || 2,
-      charmPrice: Number(String(match.charmPrice || r[5]).replace(/[^0-9]/g, '')) || 150000,
-      inviteStatus: String(r[6] || 'No, flying solo').trim(),
-      registeredAt: r[0] ? String(r[0]) : '',
-      paymentStatus: match.paymentStatus || String(r[9] || 'Unpaid').trim(),
-      paymentMethod: match.paymentMethod || String(r[10] || '').trim(),
-      birthday: match.birthday || String(r[11] || '').trim(),
-      checkedIn: match.checkedIn || String(r[12] || 'No').trim(),
-      checkInTime: match.checkInTime || String(r[13] || '').trim(),
-      notes: match.notes || String(r[14] || '').trim()
-    });
-  }
-
-  for (let i = 1; i < checkInData.length; i++) {
-    const r = checkInData[i];
-    const name = String(r[1] || '').trim();
-    if (!name || seenNames.has(name.toLowerCase())) continue;
-    rows.push({
-      rowNumber: i + 1,
-      name: name,
-      whatsapp: String(r[2] || '').trim(),
-      email: '',
-      charmCount: Number(r[9]) || 2,
-      charmPrice: Number(r[10]) || 150000,
-      inviteStatus: 'Walk-In',
-      registeredAt: r[0] ? String(r[0]) : '',
-      paymentStatus: String(r[3] || 'Unpaid').trim(),
-      paymentMethod: String(r[4] || '').trim(),
-      birthday: String(r[5] || '').trim(),
-      checkedIn: String(r[6] || 'No').trim(),
-      checkInTime: String(r[7] || '').trim(),
-      notes: String(r[8] || '').trim()
-    });
-  }
-
-  return ContentService.createTextOutput(JSON.stringify({
-    status: 'ok',
-    syncedAt: new Date().toISOString(),
-    rows: rows
-  })).setMimeType(ContentService.MimeType.JSON);
-}
-
-function doPost(e) {
-  const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
-  try {
-    const payload = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
-
-    if (payload.action === 'checkin_update') {
-      const sheet = getOrCreateCheckInSheet_(ss);
-      const data = sheet.getDataRange().getValues();
-
-      const targetName = String(payload.name || '').trim().toLowerCase();
-      const targetPhone = normalizePhone_(payload.whatsapp);
-      let rowIndex = -1;
-
-      for (let i = 1; i < data.length; i++) {
-        const rowName = String(data[i][1] || '').trim().toLowerCase();
-        const rowPhone = normalizePhone_(data[i][2]);
-        if ((targetName && rowName === targetName) || (targetPhone && rowPhone === targetPhone && rowName === targetName)) {
-          rowIndex = i + 1;
-          break;
-        }
-      }
-
-      const rowValues = [
-        new Date(),
-        payload.name || '',
-        payload.whatsapp || '',
-        payload.paymentStatus || 'Unpaid',
-        payload.paymentMethod || '',
-        payload.birthday || '',
-        payload.checkedIn ? 'Yes' : 'No',
-        payload.checkInTime || '',
-        payload.notes || '',
-        Number(payload.charmCount) || 2,
-        Number(payload.charmPrice) || 150000
-      ];
-
-      if (rowIndex > 0) {
-        sheet.getRange(rowIndex, 1, 1, rowValues.length).setValues([rowValues]);
-      } else {
-        sheet.appendRow(rowValues);
-      }
-
-      return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: CHECKIN_SHEET_NAME }))
-        .setMimeType(ContentService.MimeType.JSON);
-    }
-
-    const regSheet = ss.getSheetByName(REG_SHEET_NAME);
-    regSheet.appendRow([
-      new Date(),
-      payload.name,
-      payload.whatsapp,
-      payload.email || '',
-      payload.charmCount,
-      payload.charmPrice,
-      payload.invitingFriend,
-      payload.referredBy || '',
-      payload.inviteShareUrl || ''
-    ]);
-
-    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: REG_SHEET_NAME }))
-      .setMimeType(ContentService.MimeType.JSON);
-  } finally {
-    lock.releaseLock();
-  }
-}`;
+    // Read from the <script type="text/plain" id="apps-script-source"> block above
+    const GOOGLE_APPS_SCRIPT_TEMPLATE = (document.getElementById('apps-script-source') || {}).textContent
+      ? document.getElementById('apps-script-source').textContent.trim()
+      : '';
 
     const INITIAL_CSV_GUESTS = [
       { id: 1, rowNumber: 2, name: "Stella Nurina Susanto", whatsapp: "08128869787", email: "stellanurina@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-19 16:31", paid: true, birthdayDay: "02", birthdayMonth: "07", birthdayYear: "1986" },
@@ -1096,12 +1286,15 @@ function doPost(e) {
     function initApp() {
       populateDateDropdowns();
       document.getElementById('apps-script-code-box').value = GOOGLE_APPS_SCRIPT_TEMPLATE;
+      loadPending();
       loadSheetUrlFromStorage();
       loadGuestsFromStorage();
       renderAll();
+      bindKeyboardShortcuts();
 
       if (googleSheetUrl && !googleSheetUrl.includes('PASTE_YOUR_EXEC_ID_HERE')) {
         syncFromGoogleSheet(false);
+        startAutoSync();
       }
     }
 
@@ -1212,15 +1405,22 @@ function doPost(e) {
         spinner.classList.add('animate-spin');
       } else if (state === 'error') {
         dot.className = 'w-2.5 h-2.5 rounded-full bg-pinkDeep';
-        text.textContent = 'Sync Warning (Saved Locally)';
-        sub.textContent = '• Check Web App permissions or click Sync Now';
+        text.textContent = 'Offline — saved on this device';
+        sub.textContent = pendingIds.size
+          ? `• ${pendingIds.size} change${pendingIds.size === 1 ? '' : 's'} waiting to sync — tap Sync Now`
+          : '• Check Wi-Fi or tap Sync Now';
+        spinner.classList.remove('animate-spin');
+      } else if (pendingIds.size) {
+        dot.className = 'w-2.5 h-2.5 rounded-full bg-amberWarm';
+        text.textContent = `${pendingIds.size} change${pendingIds.size === 1 ? '' : 's'} waiting to sync`;
+        sub.textContent = '• Sending to Google Sheet...';
         spinner.classList.remove('animate-spin');
       } else {
         dot.className = 'w-2.5 h-2.5 rounded-full bg-tealDeep';
         text.textContent = lastSyncedAt
           ? `Synced with Google Sheet • Last synced ${lastSyncedAt}`
           : 'Connected to Google Sheet';
-        sub.textContent = '• Changes push automatically';
+        sub.textContent = '• Changes push automatically • refreshes every minute';
         spinner.classList.remove('animate-spin');
       }
     }
@@ -1240,11 +1440,60 @@ function doPost(e) {
       return { day, month, year };
     }
 
+    // ---- Sync helpers -------------------------------------------------------
+    const PENDING_KEY = 'wfm_charmingly_yours_pending_v1';
+    const AUTO_SYNC_MS = 45000;
+    let pendingIds = new Set();
+    let pushChain = Promise.resolve();
+    let syncInFlight = false;
+
+    function loadPending() {
+      try { pendingIds = new Set(JSON.parse(localStorage.getItem(PENDING_KEY) || '[]')); } catch (e) { pendingIds = new Set(); }
+    }
+
+    function savePending() {
+      try { localStorage.setItem(PENDING_KEY, JSON.stringify([...pendingIds])); } catch (e) {}
+    }
+
+    function waTail(val) {
+      return String(val || '').replace(/\D/g, '').slice(-8);
+    }
+
+    // Match a sheet row to a local guest: name (current or original registration name) + phone,
+    // then name alone, then phone alone if only one guest has that number.
+    function findLocalGuestForSheetRow(sheetRow) {
+      const names = [sheetRow.name, sheetRow.registeredName]
+        .filter(Boolean)
+        .map(n => String(n).trim().toLowerCase());
+      const tail = waTail(sheetRow.whatsapp);
+
+      let match = guests.find(g => names.includes(g.name.toLowerCase()) && (!tail || waTail(g.whatsapp) === tail));
+      if (match) return match;
+      match = guests.find(g => names.includes(g.name.toLowerCase()));
+      if (match) return match;
+      if (tail) {
+        const byPhone = guests.filter(g => !g.isTest && waTail(g.whatsapp) === tail);
+        if (byPhone.length === 1) return byPhone[0];
+      }
+      return null;
+    }
+
+    function anyModalOpen() {
+      return ['door-signin-modal', 'walkin-modal', 'sheet-setup-modal', 'confirm-modal']
+        .some(id => !document.getElementById(id).classList.contains('hidden'));
+    }
+
     async function syncFromGoogleSheet(showFeedback = true) {
       if (!googleSheetUrl) {
         if (showFeedback) openSheetSetupModal();
         return;
       }
+      if (syncInFlight) return;
+      syncInFlight = true;
+
+      // Send any changes that haven't reached the sheet yet before reading it back
+      flushPendingPushes();
+      await pushChain;
 
       updateSyncStatusUI('syncing');
       try {
@@ -1259,17 +1508,18 @@ function doPost(e) {
             const sheetCheckedIn = String(sheetRow.checkedIn || '').toLowerCase() === 'yes' || sheetRow.checkedIn === true;
             const parsedBday = parseBirthdayStringFromSheet(sheetRow.birthday);
 
-            const targetWaTail = String(sheetRow.whatsapp || '').replace(/\D/g, '').slice(-8);
-            let existing = guests.find(g => {
-              const gWaTail = String(g.whatsapp || '').replace(/\D/g, '').slice(-8);
-              return g.name.toLowerCase() === sheetRow.name.toLowerCase() && (!targetWaTail || gWaTail === targetWaTail);
-            });
-            if (!existing) {
-              existing = guests.find(g => g.name.toLowerCase() === sheetRow.name.toLowerCase());
-            }
+            const existing = findLocalGuestForSheetRow(sheetRow);
 
             if (existing) {
+              // Local edits that haven't reached the sheet yet win over the sheet
+              if (pendingIds.has(existing.id)) return;
+
+              existing.name = String(sheetRow.name).trim() || existing.name;
+              if (sheetRow.whatsapp) existing.whatsapp = String(sheetRow.whatsapp);
+              if (sheetRow.email) existing.email = sheetRow.email;
               existing.rowNumber = sheetRow.rowNumber || existing.rowNumber;
+              if (Number(sheetRow.charmCount)) existing.charms = Number(sheetRow.charmCount);
+              if (Number(sheetRow.charmPrice)) existing.price = Number(sheetRow.charmPrice);
               existing.paid = sheetPaid || existing.paid;
               if (sheetRow.paymentMethod) existing.paymentMethod = sheetRow.paymentMethod;
               if (parsedBday.day && parsedBday.month) {
@@ -1287,16 +1537,16 @@ function doPost(e) {
               guests.push({
                 id: nextId,
                 rowNumber: sheetRow.rowNumber || nextId + 1,
-                name: sheetRow.name,
-                whatsapp: sheetRow.whatsapp || '',
+                name: String(sheetRow.name).trim(),
+                whatsapp: String(sheetRow.whatsapp || ''),
                 email: sheetRow.email || '',
                 charms: Number(sheetRow.charmCount) || 2,
                 price: Number(sheetRow.charmPrice) || 150000,
                 inviteStatus: sheetRow.inviteStatus || 'No, flying solo',
                 registeredAt: sheetRow.registeredAt || '',
-                isTest: sheetRow.name.toLowerCase() === 'test',
+                isTest: String(sheetRow.name).trim().toLowerCase() === 'test',
                 paid: sheetPaid,
-                paymentMethod: sheetRow.paymentMethod || (sheetPaid ? 'Bank Transfer' : ''),
+                paymentMethod: sheetRow.paymentMethod || '',
                 notes: sheetRow.notes || '',
                 birthdayDay: parsedBday.day,
                 birthdayMonth: parsedBday.month,
@@ -1321,16 +1571,15 @@ function doPost(e) {
         console.warn('Google Sheet GET sync error:', err);
         updateSyncStatusUI('error');
         if (showFeedback) {
-          showToast('Could not fetch from Sheet URL. Verify Web App deployment.', 'warning');
+          showToast('Could not reach the Google Sheet. Changes are saved on this device and will sync when it reconnects.', 'warning');
         }
+      } finally {
+        syncInFlight = false;
       }
     }
 
-    async function pushGuestUpdateToGoogleSheet(guest) {
-      if (!googleSheetUrl || !guest) return;
-
-      updateSyncStatusUI('syncing');
-      const payload = {
+    function buildPushPayload(guest) {
+      return {
         action: 'checkin_update',
         rowNumber: guest.rowNumber,
         name: guest.name,
@@ -1347,19 +1596,67 @@ function doPost(e) {
         checkInTime: guest.checkInTime || '',
         notes: guest.notes || ''
       };
+    }
 
+    async function sendGuestToSheet(id) {
+      const guest = guests.find(g => g.id === id);
+      if (!guest || !googleSheetUrl) return;
+
+      updateSyncStatusUI('syncing');
       try {
-        await fetch(googleSheetUrl, {
+        const res = await fetch(googleSheetUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify(buildPushPayload(guest))
         });
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        let body = null;
+        try { body = await res.json(); } catch (e) {}
+        if (body && body.status && body.status !== 'ok') throw new Error('Script error');
+
+        pendingIds.delete(id);
+        savePending();
         lastSyncedAt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
         updateSyncStatusUI('idle');
       } catch (err) {
         console.warn('Google Sheet POST sync error:', err);
         updateSyncStatusUI('error');
       }
+    }
+
+    // Saves are sent one at a time (the Apps Script locks the sheet per request),
+    // and anything that fails stays queued on this device until it goes through.
+    function pushGuestUpdateToGoogleSheet(guest) {
+      if (!guest) return pushChain;
+      pendingIds.add(guest.id);
+      savePending();
+      if (!googleSheetUrl) {
+        updateSyncStatusUI();
+        return pushChain;
+      }
+      pushChain = pushChain.then(() => sendGuestToSheet(guest.id));
+      return pushChain;
+    }
+
+    function flushPendingPushes() {
+      if (!googleSheetUrl) return;
+      [...pendingIds].forEach(id => {
+        pushChain = pushChain.then(() => (pendingIds.has(id) ? sendGuestToSheet(id) : null));
+      });
+    }
+
+    let autoSyncStarted = false;
+    function startAutoSync() {
+      if (autoSyncStarted) return;
+      autoSyncStarted = true;
+      setInterval(() => {
+        if (!googleSheetUrl || document.hidden || anyModalOpen() || kioskSelectedGuestId) return;
+        syncFromGoogleSheet(false);
+      }, AUTO_SYNC_MS);
+      window.addEventListener('online', () => syncFromGoogleSheet(false));
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && googleSheetUrl && !anyModalOpen()) syncFromGoogleSheet(false);
+      });
     }
 
     // Sheet Setup Modal Controls
@@ -1381,6 +1678,7 @@ function doPost(e) {
       closeSheetSetupModal();
       if (googleSheetUrl) {
         syncFromGoogleSheet(true);
+        startAutoSync();
       } else {
         updateSyncStatusUI();
       }
@@ -1591,6 +1889,12 @@ function doPost(e) {
     function renderAll() {
       updateKPIsAndCounts();
       renderGuestList();
+      // Keep the kiosk name list fresh too (e.g. after a background sync)
+      const kioskView = document.getElementById('kiosk-view');
+      const kioskSearch = document.getElementById('kiosk-step-search');
+      if (kioskView && !kioskView.classList.contains('hidden') && !kioskSearch.classList.contains('hidden')) {
+        renderKioskResults(document.getElementById('kiosk-search-input').value);
+      }
     }
 
     function renderGuestList() {
@@ -1692,7 +1996,7 @@ function doPost(e) {
               <!-- 1. One-Tap Paid / Unpaid Toggle Badge -->
               <button
                 onclick="quickTogglePayment(${g.id})"
-                title="Click to toggle Paid / Unpaid status"
+                title="Unpaid: open to record payment • Paid: tap to mark Unpaid"
                 class="px-3.5 py-2 rounded-xl text-xs font-extrabold border transition flex items-center gap-1.5 shrink-0 ${
                   g.paid
                     ? 'bg-tealLight text-tealDeep border-tealAccent/40 hover:bg-tealDeep hover:text-white'
@@ -1738,12 +2042,21 @@ function doPost(e) {
                   <span>Checked In ✓</span>
                   <span class="text-[11px] opacity-90">(${escapeHTML(g.checkInTime)})</span>
                 </button>
+              ` : g.paid ? `
+                <button
+                  onclick="quickCheckIn(${g.id})"
+                  title="Already paid — checks her in straight away"
+                  class="px-4 py-2 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-xs font-extrabold shadow-2xs transition active:scale-[0.98] shrink-0"
+                >
+                  Check In ✓
+                </button>
               ` : `
                 <button
                   onclick="openDoorModal(${g.id})"
+                  title="Not paid yet — collect payment, then check in"
                   class="px-4 py-2 rounded-xl bg-pinkDeep hover:bg-pinkDeep/90 text-white text-xs font-extrabold shadow-2xs transition active:scale-[0.98] shrink-0"
                 >
-                  Check In →
+                  Collect &amp; Check In →
                 </button>
               `}
             </div>
@@ -1758,16 +2071,61 @@ function doPost(e) {
     function quickTogglePayment(id) {
       const g = guests.find(item => item.id === id);
       if (!g) return;
-      g.paid = !g.paid;
-      if (g.paid && !g.paymentMethod) g.paymentMethod = 'Bank Transfer';
+      // Marking someone Paid goes through the popup so the desk records how they paid
+      if (!g.paid) {
+        openDoorModal(id);
+        setModalPaidState(true);
+        return;
+      }
+      setGuestPaid(g, false);
+      showToast(`${g.name} marked as Unpaid`, 'warning', () => {
+        setGuestPaid(g, true);
+        showToast(`${g.name} is Paid again ✓`, 'success');
+      });
+    }
+
+    function setGuestPaid(g, isPaid) {
+      g.paid = isPaid;
+      if (isPaid && !g.paymentMethod) g.paymentMethod = 'Bank Transfer';
       saveGuestsToStorage();
       renderAll();
       pushGuestUpdateToGoogleSheet(g);
-      showToast(
-        g.paid ? `${g.name} marked as Paid ✓` : `${g.name} marked as Unpaid`,
-        g.paid ? 'success' : 'warning'
-      );
     }
+
+    // Paid guests: one tap and they're in. Birthday can be added later from the 🎂 button.
+    function quickCheckIn(id) {
+      const g = guests.find(item => item.id === id);
+      if (!g) return;
+      if (!g.paid) {
+        openDoorModal(id);
+        return;
+      }
+      g.checkedIn = true;
+      g.checkInTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      saveGuestsToStorage();
+      renderAll();
+      pushGuestUpdateToGoogleSheet(g);
+      showToast(`✨ ${g.name} checked in (Paid${g.paymentMethod ? ', ' + g.paymentMethod : ''})`, 'success', () => undoCheckIn(g.id));
+      readyForNextGuest();
+    }
+
+    // "⋯ More" menu
+    function toggleMoreMenu(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('more-menu');
+      const open = menu.classList.toggle('hidden') === false;
+      document.getElementById('more-menu-btn').setAttribute('aria-expanded', String(open));
+    }
+
+    function closeMoreMenu() {
+      document.getElementById('more-menu').classList.add('hidden');
+      document.getElementById('more-menu-btn').setAttribute('aria-expanded', 'false');
+    }
+
+    document.addEventListener('click', e => {
+      const wrap = document.getElementById('more-menu-wrap');
+      if (wrap && !wrap.contains(e.target)) closeMoreMenu();
+    });
 
     function undoCheckIn(id) {
       const g = guests.find(item => item.id === id);
@@ -1820,13 +2178,7 @@ function doPost(e) {
       bulkMode = !bulkMode;
       selectedForBulk.clear();
       const bar = document.getElementById('bulk-action-bar');
-      const btn = document.getElementById('bulk-mode-btn');
       bar.classList.toggle('hidden', !bulkMode);
-      if (bulkMode) {
-        btn.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-tealDeep text-white text-xs sm:text-sm font-bold transition';
-      } else {
-        btn.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-tealLight border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition';
-      }
       updateBulkSelectedCount();
       renderGuestList();
     }
@@ -1891,8 +2243,8 @@ function doPost(e) {
         <span>• ${escapeHTML(g.inviteStatus)}</span>
       `;
 
-      setModalPaidState(g.paid);
       document.getElementById('modal-payment-method').value = g.paymentMethod || 'Bank Transfer';
+      setModalPaidState(g.paid);
       document.getElementById('modal-payment-note').value = g.notes || '';
       document.getElementById('modal-bday-day').value = g.birthdayDay || '';
       document.getElementById('modal-bday-month').value = g.birthdayMonth || '';
@@ -1901,10 +2253,47 @@ function doPost(e) {
       document.getElementById('door-signin-modal').classList.remove('hidden');
     }
 
+    function modalPrice() {
+      const count = Number(document.getElementById('modal-charm-count').value) || 2;
+      return 150000 + Math.max(0, count - 2) * 50000;
+    }
+
     function updateModalCharmPrice(countStr) {
       const count = Number(countStr) || 2;
-      const price = 150000 + Math.max(0, count - 2) * 50000;
-      document.getElementById('modal-price-tag').textContent = `${count} Charms • ${formatRupiah(price)}`;
+      document.getElementById('modal-price-tag').textContent = `${count} Charms • ${formatRupiah(modalPrice())}`;
+      setModalPaidState(modalPaidTemp);
+    }
+
+    // The desk checks payment before letting someone in: an Unpaid guest gets a clear
+    // "collect Rp X" prompt, and checking them in unpaid takes a deliberate second tap.
+    let unpaidCheckInArmed = false;
+
+    function refreshModalCheckInState() {
+      const banner = document.getElementById('modal-due-banner');
+      const bannerText = document.getElementById('modal-due-text');
+      const btn = document.getElementById('modal-checkin-btn');
+      const methodSelect = document.getElementById('modal-payment-method');
+
+      methodSelect.disabled = !modalPaidTemp;
+      methodSelect.classList.toggle('opacity-50', !modalPaidTemp);
+
+      if (modalPaidTemp) {
+        banner.classList.add('hidden');
+        btn.textContent = 'Save & Check In ✓';
+        btn.className = 'flex-1 py-3 px-4 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-sm font-extrabold shadow-sm transition';
+        return;
+      }
+
+      banner.classList.remove('hidden');
+      if (unpaidCheckInArmed) {
+        bannerText.textContent = `Still unpaid (${formatRupiah(modalPrice())}). Tap "Check In Unpaid" again to check them in and collect later — a reminder is added to their notes.`;
+        btn.textContent = 'Check In Unpaid';
+        btn.className = 'flex-1 py-3 px-4 rounded-xl bg-amberWarm hover:bg-amberWarm/90 text-white text-sm font-extrabold shadow-sm transition';
+      } else {
+        bannerText.textContent = `Not paid yet — collect ${formatRupiah(modalPrice())}, then tap Paid ✓ and pick the method.`;
+        btn.textContent = 'Save & Check In ✓';
+        btn.className = 'flex-1 py-3 px-4 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-sm font-extrabold shadow-sm transition';
+      }
     }
 
     function setModalPaidState(isPaid) {
@@ -1919,16 +2308,34 @@ function doPost(e) {
         paidBtn.className = 'py-3 px-4 rounded-xl border-2 border-borderPink bg-white text-slateMuted text-sm font-bold flex items-center justify-center gap-2 transition hover:border-tealDeep/50';
         unpaidBtn.className = 'py-3 px-4 rounded-xl border-2 border-amberWarm bg-amberLight text-amberWarm text-sm font-extrabold flex items-center justify-center gap-2 transition';
       }
+      if (isPaid) unpaidCheckInArmed = false;
+      refreshModalCheckInState();
     }
 
     function closeDoorModal() {
       document.getElementById('door-signin-modal').classList.add('hidden');
       activeModalGuestId = null;
+      unpaidCheckInArmed = false;
+    }
+
+    // After each check-in, clear the search and put the cursor back for the next guest
+    function readyForNextGuest() {
+      clearSearch();
+      const input = document.getElementById('search-input');
+      if (input && window.matchMedia('(min-width: 768px)').matches) input.focus();
     }
 
     function saveDoorModal(alsoCheckIn) {
       const g = guests.find(item => item.id === activeModalGuestId);
       if (!g) return;
+
+      // First tap on an unpaid guest only warns; the second tap checks her in unpaid
+      if (alsoCheckIn && !modalPaidTemp && !unpaidCheckInArmed) {
+        unpaidCheckInArmed = true;
+        refreshModalCheckInState();
+        return;
+      }
+      const checkedInUnpaid = alsoCheckIn && !modalPaidTemp;
 
       const charmCount = Number(document.getElementById('modal-charm-count').value) || 2;
       g.charms = charmCount;
@@ -1936,6 +2343,14 @@ function doPost(e) {
       g.paid = modalPaidTemp;
       g.paymentMethod = document.getElementById('modal-payment-method').value;
       g.notes = document.getElementById('modal-payment-note').value.trim();
+      if (checkedInUnpaid && !/collect at desk/i.test(g.notes)) {
+        const flag = `Checked in unpaid — collect at desk (${formatRupiah(g.price)})`;
+        g.notes = g.notes ? `${g.notes} • ${flag}` : flag;
+      }
+      if (g.paid) {
+        // Payment settled: drop the old "collect at desk" reminder
+        g.notes = g.notes.split(' • ').filter(n => !/collect at desk/i.test(n)).join(' • ');
+      }
       g.birthdayDay = document.getElementById('modal-bday-day').value;
       g.birthdayMonth = document.getElementById('modal-bday-month').value;
       g.birthdayYear = document.getElementById('modal-bday-year').value.trim();
@@ -1951,7 +2366,12 @@ function doPost(e) {
       pushGuestUpdateToGoogleSheet(g);
 
       if (alsoCheckIn) {
-        showToast(`✨ ${g.name} checked in (${g.paid ? 'Paid' : 'Unpaid'})!`, 'success', () => undoCheckIn(g.id));
+        showToast(
+          g.paid ? `✨ ${g.name} checked in (Paid, ${g.paymentMethod})` : `${g.name} checked in UNPAID — collect ${formatRupiah(g.price)}`,
+          g.paid ? 'success' : 'warning',
+          () => undoCheckIn(g.id)
+        );
+        readyForNextGuest();
       } else {
         showToast(`Saved details for ${g.name} ✓`, 'success');
       }
@@ -2000,7 +2420,7 @@ function doPost(e) {
           closeConfirmModal();
           switchMode('host');
         } else {
-          showToast('Incorrect PIN (Default: 1234)', 'warning');
+          showToast('Incorrect PIN', 'warning');
           pinInput.value = '';
           pinInput.focus();
         }
@@ -2010,7 +2430,19 @@ function doPost(e) {
       setTimeout(() => pinInput.focus(), 50);
     }
 
+    let kioskAutoReturnTimer = null;
+
+    // Guests see each other's entries on the kiosk, so only show the last 4 digits
+    function maskWhatsApp(raw) {
+      const digits = String(raw || '').replace(/\D/g, '');
+      return digits.length >= 4 ? `•••• ${digits.slice(-4)}` : '—';
+    }
+
     function kioskBackToSearch() {
+      if (kioskAutoReturnTimer) {
+        clearInterval(kioskAutoReturnTimer);
+        kioskAutoReturnTimer = null;
+      }
       kioskSelectedGuestId = null;
       document.getElementById('kiosk-step-search').classList.remove('hidden');
       document.getElementById('kiosk-step-confirm').classList.add('hidden');
@@ -2025,30 +2457,30 @@ function doPost(e) {
       const q = String(query || '').toLowerCase().trim();
       const qDigits = q.replace(/\D/g, '');
 
-      const matches = getScopedGuests().filter(g => {
-        if (!q) return true;
-        const waDigits = g.whatsapp.replace(/\D/g, '');
-        return (
-          g.name.toLowerCase().includes(q) ||
-          (qDigits.length >= 3 && waDigits.includes(qDigits))
-        );
-      });
+      const matches = getScopedGuests()
+        .filter(g => {
+          if (!q) return true;
+          const waDigits = g.whatsapp.replace(/\D/g, '');
+          return (
+            g.name.toLowerCase().includes(q) ||
+            (qDigits.length >= 4 && waDigits.includes(qDigits))
+          );
+        })
+        .sort((a, b) => Number(a.checkedIn) - Number(b.checkedIn) || a.name.localeCompare(b.name));
 
       if (matches.length === 0) {
         listEl.innerHTML = `
           <div class="p-6 text-center rounded-2xl bg-blushBg border border-borderPink text-xs text-slateMuted font-semibold">
-            No matching registration found. Tap <strong>+ Register as Walk-In Guest</strong> below!
+            No matching registration found. Try your first name or the last 4 digits of your WhatsApp,<br />or tap <strong>+ Register as Walk-In Guest</strong> below.
           </div>`;
         return;
       }
 
-      listEl.innerHTML = matches.map(g => {
-        const wa = normalizeWhatsApp(g.whatsapp);
-        return `
+      listEl.innerHTML = matches.map(g => `
           <button type="button" onclick="selectKioskGuest(${g.id})" class="w-full text-left p-4 rounded-2xl bg-blushBg/70 hover:bg-blushSoft border border-borderPink hover:border-pinkDeep transition flex items-center justify-between gap-3">
             <div class="min-w-0">
               <div class="font-extrabold text-base text-slateDark truncate">${escapeHTML(g.name)}</div>
-              <div class="text-xs text-slateMuted font-semibold mt-0.5">${escapeHTML(wa.display)} • ${g.charms} Charms</div>
+              <div class="text-xs text-slateMuted font-semibold mt-0.5">WhatsApp ${escapeHTML(maskWhatsApp(g.whatsapp))} • ${g.charms} Charms</div>
             </div>
             <div class="shrink-0 flex items-center gap-2">
               ${g.checkedIn
@@ -2056,21 +2488,30 @@ function doPost(e) {
                 : `<span class="px-3 py-1.5 rounded-xl bg-pinkDeep text-white text-xs font-extrabold">Tap to Sign In →</span>`
               }
             </div>
-          </button>`;
-      }).join('');
+          </button>`).join('');
+    }
+
+    function toggleKioskPaymentMethod() {
+      const isPaid = document.getElementById('kiosk-payment-status').value === 'Paid';
+      document.getElementById('kiosk-payment-method').classList.toggle('hidden', !isPaid);
     }
 
     function selectKioskGuest(id) {
       const g = guests.find(item => item.id === id);
       if (!g) return;
+
+      if (g.checkedIn) {
+        showToast(`${g.name} is already checked in${g.checkInTime ? ' (' + g.checkInTime + ')' : ''} ✓ — see the host desk if this isn't you.`, 'success');
+        return;
+      }
+
       kioskSelectedGuestId = id;
 
-      const wa = normalizeWhatsApp(g.whatsapp);
       document.getElementById('kiosk-selected-summary').innerHTML = `
         <div class="flex items-center justify-between gap-2">
           <div>
             <div class="text-lg font-extrabold text-slateDark">${escapeHTML(g.name)}</div>
-            <div class="text-xs font-semibold text-slateMuted">${escapeHTML(wa.display)} • ${g.charms} Charms (${formatRupiah(g.price)})</div>
+            <div class="text-xs font-semibold text-slateMuted">WhatsApp ${escapeHTML(maskWhatsApp(g.whatsapp))} • ${g.charms} Charms (${formatRupiah(g.price)})</div>
           </div>
           <span class="px-3 py-1 rounded-full text-xs font-extrabold ${g.paid ? 'bg-tealLight text-tealDeep' : 'bg-amberLight text-amberWarm'}">
             ${g.paid ? 'Paid ✓' : 'Unpaid'}
@@ -2082,7 +2523,8 @@ function doPost(e) {
       if (!g.paid) {
         unpaidBox.classList.remove('hidden');
         document.getElementById('kiosk-payment-status').value = 'Unpaid';
-        document.getElementById('kiosk-payment-method').value = g.paymentMethod || 'QRIS';
+        document.getElementById('kiosk-payment-method').value = g.paymentMethod || 'Bank Transfer';
+        toggleKioskPaymentMethod();
       } else {
         unpaidBox.classList.add('hidden');
       }
@@ -2093,6 +2535,7 @@ function doPost(e) {
 
       document.getElementById('kiosk-step-search').classList.add('hidden');
       document.getElementById('kiosk-step-confirm').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function completeKioskSignIn() {
@@ -2113,6 +2556,8 @@ function doPost(e) {
         if (payStatus === 'Paid') {
           g.paid = true;
           g.paymentMethod = document.getElementById('kiosk-payment-method').value;
+          const flag = `Self-reported paid at kiosk (${g.paymentMethod}) — please verify`;
+          g.notes = g.notes ? `${g.notes} • ${flag}` : flag;
         }
       }
 
@@ -2126,12 +2571,33 @@ function doPost(e) {
       renderAll();
       pushGuestUpdateToGoogleSheet(g);
 
+      showKioskSuccess(g);
+    }
+
+    function showKioskSuccess(g) {
       document.getElementById('kiosk-success-title').textContent = `Welcome, ${g.name}!`;
       document.getElementById('kiosk-success-msg').textContent = `You're checked in for Charmingly Yours (${g.charms} bag charms). Enjoy the workshop!`;
+      document.getElementById('kiosk-success-amount').textContent = formatRupiah(g.price);
       document.getElementById('kiosk-success-payment-note').classList.toggle('hidden', g.paid);
 
+      document.getElementById('kiosk-step-search').classList.add('hidden');
       document.getElementById('kiosk-step-confirm').classList.add('hidden');
       document.getElementById('kiosk-step-success').classList.remove('hidden');
+      kioskSelectedGuestId = null;
+
+      // Return to the name search on its own so the next guest doesn't see this one's details
+      let secondsLeft = 10;
+      const label = document.getElementById('kiosk-auto-return');
+      label.textContent = `Returning to the guest list in ${secondsLeft}s`;
+      if (kioskAutoReturnTimer) clearInterval(kioskAutoReturnTimer);
+      kioskAutoReturnTimer = setInterval(() => {
+        secondsLeft -= 1;
+        if (secondsLeft <= 0) {
+          kioskBackToSearch();
+        } else {
+          label.textContent = `Returning to the guest list in ${secondsLeft}s`;
+        }
+      }, 1000);
     }
 
     // =========================================================================
@@ -2147,8 +2613,12 @@ function doPost(e) {
       document.getElementById('walkin-bday-day').value = '';
       document.getElementById('walkin-bday-month').value = '';
       document.getElementById('walkin-bday-year').value = '';
-      document.getElementById('walkin-paid').checked = true;
+      // Guests registering themselves can't mark themselves paid — the host settles payment
+      document.getElementById('walkin-paid').checked = !walkInFromKiosk;
       document.getElementById('walkin-checkin').checked = true;
+      document.getElementById('walkin-host-options').classList.toggle('hidden', walkInFromKiosk);
+      document.getElementById('walkin-method-wrap').classList.toggle('hidden', walkInFromKiosk);
+      document.getElementById('walkin-title').textContent = walkInFromKiosk ? 'Register as a Walk-In Guest' : 'Add Walk-In Guest';
       document.getElementById('walkin-modal').classList.remove('hidden');
       setTimeout(() => document.getElementById('walkin-name').focus(), 50);
     }
@@ -2157,15 +2627,35 @@ function doPost(e) {
       document.getElementById('walkin-modal').classList.add('hidden');
     }
 
+    function findExistingRegistration(name, whatsapp) {
+      const n = name.trim().toLowerCase();
+      const tail = waTail(whatsapp);
+      return guests.find(g => !g.isTest && g.name.toLowerCase() === n && (!tail || waTail(g.whatsapp) === tail))
+        || (tail ? guests.find(g => !g.isTest && waTail(g.whatsapp) === tail && g.name.toLowerCase().split(' ')[0] === n.split(' ')[0]) : null);
+    }
+
     function submitWalkInForm(event) {
       event.preventDefault();
       const name = document.getElementById('walkin-name').value.trim();
       const whatsapp = document.getElementById('walkin-wa').value.trim();
       if (!name || !whatsapp) return;
 
+      // Already registered? Send them to their existing entry instead of creating a duplicate
+      const existing = findExistingRegistration(name, whatsapp);
+      if (existing) {
+        closeWalkInModal();
+        showToast(`${existing.name} is already registered — opening that entry`, 'success');
+        if (walkInFromKiosk) {
+          selectKioskGuest(existing.id);
+        } else {
+          openDoorModal(existing.id);
+        }
+        return;
+      }
+
       const [charmsStr, priceStr] = document.getElementById('walkin-package').value.split('|');
       const isPaid = document.getElementById('walkin-paid').checked;
-      const isCheckedIn = document.getElementById('walkin-checkin').checked;
+      const isCheckedIn = walkInFromKiosk ? true : document.getElementById('walkin-checkin').checked;
       const nextId = guests.reduce((m, g) => Math.max(m, g.id), 0) + 1;
 
       const newGuest = {
@@ -2177,11 +2667,11 @@ function doPost(e) {
         charms: Number(charmsStr) || 2,
         price: Number(priceStr) || 150000,
         inviteStatus: 'Walk-In',
-        registeredAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        registeredAt: new Date().toLocaleString('sv-SE', { hour12: false }).slice(0, 16),
         isTest: false,
         paid: isPaid,
         paymentMethod: isPaid ? document.getElementById('walkin-method').value : '',
-        notes: 'Walk-in guest',
+        notes: walkInFromKiosk ? 'Walk-in (self-registered at kiosk)' : 'Walk-in guest',
         birthdayDay: document.getElementById('walkin-bday-day').value,
         birthdayMonth: document.getElementById('walkin-bday-month').value,
         birthdayYear: document.getElementById('walkin-bday-year').value.trim(),
@@ -2196,9 +2686,10 @@ function doPost(e) {
       pushGuestUpdateToGoogleSheet(newGuest);
 
       if (walkInFromKiosk) {
-        renderKioskResults('');
+        showKioskSuccess(newGuest);
+      } else {
+        showToast(`✨ Walk-in guest ${name} added!`, 'success');
       }
-      showToast(`✨ Walk-in guest ${name} added!`, 'success');
     }
 
     // =========================================================================
@@ -2381,10 +2872,83 @@ function doPost(e) {
       showToast('Exported updated registrar CSV ✓', 'success');
     }
 
+    // =========================================================================
+    // PRINTABLE DOOR LIST — backup if the phone or Wi-Fi fails at the door
+    // =========================================================================
+    function printDoorList() {
+      const list = guests
+        .filter(g => !g.isTest)
+        .slice()
+        .sort((a, b) => a.name.localeCompare(b.name, 'en', { sensitivity: 'base' }));
+      const paid = list.filter(g => g.paid);
+      const due = list.filter(g => !g.paid);
+      const dueAmount = due.reduce((sum, g) => sum + g.price, 0);
+      const printedAt = new Date().toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+
+      const rows = list.map((g, i) => {
+        const wa = normalizeWhatsApp(g.whatsapp);
+        const bday = formatBirthdayDisplay(g);
+        const payCell = g.paid
+          ? `<span class="ps-pill paid">PAID ✓</span>`
+          : `<span class="ps-pill due">COLLECT ${formatRupiah(g.price)}</span>
+             <div class="ps-methods"><span class="ps-box"></span>Cash<span class="ps-box"></span>QRIS<span class="ps-box"></span>Transfer</div>`;
+        return `
+          <tr class="${g.paid ? '' : 'due'}">
+            <td class="ps-num">${i + 1}</td>
+            <td style="width:22px"><span class="ps-box"></span></td>
+            <td><div class="ps-name">${escapeHTML(g.name)}</div><div class="ps-wa">${escapeHTML(wa.display)}</div></td>
+            <td style="width:44px;text-align:center">${g.charms}</td>
+            <td style="width:150px">${payCell}</td>
+            <td style="width:90px">${bday ? `<span class="ps-bday">${escapeHTML(bday)}</span>` : '<span class="ps-line"></span>'}</td>
+            <td style="width:52px"><span class="ps-line" style="min-width:44px"></span></td>
+          </tr>`;
+      }).join('');
+
+      const walkIns = Array.from({ length: 6 }, () => `
+          <tr class="ps-walkin">
+            <td class="ps-num"></td>
+            <td><span class="ps-box"></span></td>
+            <td><span class="ps-line" style="min-width:180px"></span></td>
+            <td></td>
+            <td><div class="ps-methods"><span class="ps-box"></span>Cash<span class="ps-box"></span>QRIS<span class="ps-box"></span>Transfer</div></td>
+            <td><span class="ps-line"></span></td>
+            <td><span class="ps-line" style="min-width:44px"></span></td>
+          </tr>`).join('');
+
+      const head = `
+        <thead><tr>
+          <th></th><th>In</th><th>Guest</th><th style="text-align:center">Charms</th><th>Payment</th><th>Birthday</th><th>Time</th>
+        </tr></thead>`;
+
+      document.getElementById('print-sheet').innerHTML = `
+        <div class="ps-head">
+          <div>
+            <div class="ps-kicker">Women of Faith Ministries • Door List</div>
+            <div class="ps-title">Charmingly Yours <em>— a WFM Workshop</em></div>
+            <div class="ps-meta">Fri, 20 Nov 2026 • 10:00 AM – 1:00 PM • SPH, UG Seminar Room</div>
+          </div>
+          <div class="ps-stamp">Printed ${escapeHTML(printedAt)}<br/>Sorted A–Z by name</div>
+        </div>
+        <div class="ps-stats">
+          <div class="ps-stat"><b>${list.length}</b><span>Guests</span></div>
+          <div class="ps-stat paid"><b>${paid.length}</b><span>Paid</span></div>
+          <div class="ps-stat due"><b>${due.length} <small style="font-size:9pt;font-weight:800">· ${formatRupiah(dueAmount)}</small></b><span>To collect</span></div>
+          <div class="ps-stat"><b>&nbsp;</b><span>Checked in (tally)</span></div>
+        </div>
+        <p class="ps-howto">Tick <b>In</b> when she arrives. Amber rows haven't paid yet: collect the amount, tick how she paid. Base 2 charms = Rp 150.000, +Rp 50.000 per extra charm.</p>
+        <table class="ps-table">${head}<tbody>${rows}</tbody></table>
+        <div class="ps-section">Walk-ins</div>
+        <table class="ps-table">${head}<tbody>${walkIns}</tbody></table>
+        <div class="ps-foot"><span>Afterwards, update the check-in page from this sheet so the Google Sheet stays complete.</span><span>Charmingly Yours • WFM</span></div>
+      `;
+
+      setTimeout(() => window.print(), 50);
+    }
+
     function openResetConfirmModal() {
       const modal = document.getElementById('confirm-modal');
       document.getElementById('confirm-modal-title').textContent = 'Reset to Default List?';
-      document.getElementById('confirm-modal-desc').textContent = 'This restores the 33 registrations with the 11 green-highlighted guests marked Paid, clearing local check-ins and birthdays.';
+      document.getElementById('confirm-modal-desc').textContent = `This restores the ${INITIAL_CSV_GUESTS.length} registrations from the built-in list (${INITIAL_CSV_GUESTS.filter(g => g.paid).length} Paid), clearing check-ins and birthdays saved on this device.`;
       document.getElementById('confirm-pin-wrapper').classList.add('hidden');
 
       const actionBtn = document.getElementById('confirm-modal-action-btn');
@@ -2394,7 +2958,7 @@ function doPost(e) {
         saveGuestsToStorage();
         closeConfirmModal();
         renderAll();
-        showToast('Reset to 33 guests (11 Paid) ✓', 'success');
+        showToast(`Reset to ${guests.length} guests ✓`, 'success');
       };
 
       modal.classList.remove('hidden');
@@ -2402,6 +2966,22 @@ function doPost(e) {
 
     function closeConfirmModal() {
       document.getElementById('confirm-modal').classList.add('hidden');
+    }
+
+    // Esc closes the open pop-up; Enter submits the host PIN
+    function bindKeyboardShortcuts() {
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeMoreMenu();
+          if (!document.getElementById('confirm-modal').classList.contains('hidden')) closeConfirmModal();
+          else if (!document.getElementById('door-signin-modal').classList.contains('hidden')) closeDoorModal();
+          else if (!document.getElementById('walkin-modal').classList.contains('hidden')) closeWalkInModal();
+          else if (!document.getElementById('sheet-setup-modal').classList.contains('hidden')) closeSheetSetupModal();
+        }
+      });
+      document.getElementById('confirm-pin-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') document.getElementById('confirm-modal-action-btn').click();
+      });
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
