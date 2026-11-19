@@ -1019,43 +1019,41 @@ function doPost(e) {
   }
 }`;
 
-    // =========================================================================
-    // 2. PRE-LOADED GUEST DATA (All 33 Rows + 11 Green-Highlighted Paid Guests)
-    // =========================================================================
-    const INITIAL_CSV_GUESTS = [
-      { id: 1, rowNumber: 2, name: "Stella Nurina Susanto", whatsapp: "08128869787", email: "stellanurina@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-19 16:31", paid: false },
+       const INITIAL_CSV_GUESTS = [
+      { id: 1, rowNumber: 2, name: "Stella Nurina Susanto", whatsapp: "08128869787", email: "stellanurina@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-19 16:31", paid: true, birthdayDay: "02", birthdayMonth: "07", birthdayYear: "1986" },
       { id: 2, rowNumber: 3, name: "Jesica Silviani", whatsapp: "0811300700", email: "silvianijesica1@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-20 11:25", paid: true },
       { id: 3, rowNumber: 4, name: "Eve", whatsapp: "81281212000", email: "brijer2000@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 10:44", paid: false },
-      { id: 4, rowNumber: 5, name: "Imelda N.", whatsapp: "818331223", email: "imelda.natalia80@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 14:55", paid: true },
+      { id: 4, rowNumber: 5, name: "Imelda Natalia", whatsapp: "818331223", email: "imelda.natalia80@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 14:55", paid: true },
       { id: 5, rowNumber: 6, name: "Katharina", whatsapp: "81288153912", email: "katharina.inkiriwang@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-04 11:29", paid: true },
-      { id: 6, rowNumber: 7, name: "Melissa", whatsapp: "81310978478", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-04 12:49", paid: true },
+      { id: 6, rowNumber: 7, name: "Melissa Rezanova", whatsapp: "81310978478", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-04 12:49", paid: true },
       { id: 7, rowNumber: 8, name: "Maria Evelyn", whatsapp: "81281212000", email: "brijer2000@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-11 09:14", paid: true },
       { id: 8, rowNumber: 9, name: "Evelyn Ferdina", whatsapp: "81287898900", email: "ef.soesantio@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-11 09:24", paid: true },
-      { id: 9, rowNumber: 10, name: "Rerey", whatsapp: "81258230064", email: "hijau_cake99@yahoo.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-13 20:02", paid: true },
+      { id: 9, rowNumber: 10, name: "Rerey (Reynita Octavianty)", whatsapp: "81258230064", email: "hijau_cake99@yahoo.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-13 20:02", paid: true },
       { id: 10, rowNumber: 11, name: "Amelie", whatsapp: "6281219720178", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-14 16:04", paid: false },
       { id: 11, rowNumber: 12, name: "Alena Supit", whatsapp: "816750307", email: "alenaullmer@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-15 11:42", paid: false },
-      { id: 12, rowNumber: 13, name: "Lydiana", whatsapp: "817893089", email: "lydianatan@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-15 12:24", paid: false },
-      { id: 13, rowNumber: 14, name: "Nana", whatsapp: "81806733368", email: "", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-16 16:46", paid: false },
-      { id: 14, rowNumber: 15, name: "Euneke lim", whatsapp: "6583028080", email: "euneke.lim@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-16 20:08", paid: false },
-      { id: 15, rowNumber: 16, name: "Narae yang", whatsapp: "0831-9883-6685", email: "backhand35@naver.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 08:24", paid: false },
-      { id: 16, rowNumber: 17, name: "Viona Hioe", whatsapp: "82114811423", email: "v.e.hioe@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 10:12", paid: true },
-      { id: 17, rowNumber: 18, name: "Chintia", whatsapp: "82118999021", email: "chintiao.md@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 14:21", paid: false },
+      { id: 12, rowNumber: 13, name: "Lydiana Isabel Tan", whatsapp: "817893089", email: "lydianatan@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-15 12:24", paid: false },
+      { id: 13, rowNumber: 14, name: "Nana Sindu", whatsapp: "81806733368", email: "", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-16 16:46", paid: false },
+      { id: 14, rowNumber: 15, name: "Euneke Yoelina Lim", whatsapp: "6583028080", email: "euneke.lim@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-16 20:08", paid: false },
+      { id: 15, rowNumber: 16, name: "Narae Yang", whatsapp: "0831-9883-6685", email: "backhand35@naver.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 08:24", paid: false },
+      { id: 16, rowNumber: 17, name: "Viona Erika Hioe", whatsapp: "82114811423", email: "v.e.hioe@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 10:12", paid: true },
+      { id: 17, rowNumber: 18, name: "Chintia Otami", whatsapp: "82118999021", email: "chintiao.md@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 14:21", paid: false },
       { id: 18, rowNumber: 19, name: "Adrianne", whatsapp: "811928778", email: "adriannemahendra83@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 15:33", paid: false },
-      { id: 19, rowNumber: 20, name: "Nova", whatsapp: "8132263626", email: "navyhtnouvha@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 06:23", paid: true },
+      { id: 19, rowNumber: 20, name: "Novaria", whatsapp: "8132263626", email: "navyhtnouvha@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 06:23", paid: true },
       { id: 20, rowNumber: 21, name: "Desy Natalia", whatsapp: "6281314755511", email: "desynatalia703@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 06:28", paid: false },
       { id: 21, rowNumber: 22, name: "imelda", whatsapp: "628111777843", email: "canvas90012@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 07:40", paid: false },
-      { id: 22, rowNumber: 23, name: "Irene", whatsapp: "6594323656", email: "irene_stephanie@ymail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 09:56", paid: false },
-      { id: 23, rowNumber: 24, name: "Yoanna", whatsapp: "87880050090", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 11:57", paid: true },
+      { id: 22, rowNumber: 23, name: "Irene Stephanie", whatsapp: "6594323656", email: "irene_stephanie@ymail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 09:56", paid: false },
+      { id: 23, rowNumber: 24, name: "Yoanna Kristin", whatsapp: "87880050090", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 11:57", paid: true },
       { id: 24, rowNumber: 25, name: "Christine Sagita", whatsapp: "82190064076", email: "christine_sagita@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 12:31", paid: true },
-      { id: 25, rowNumber: 26, name: "Alodia Farichai", whatsapp: "8179014050", email: "alodia.farichai@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 12:59", paid: false },
-      { id: 26, rowNumber: 27, name: "Sylvia", whatsapp: "8119781807", email: "sylsujapri@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 14:57", paid: false },
+      { id: 25, rowNumber: 26, name: "Alodia Aurora Farichai", whatsapp: "8179014050", email: "alodia.farichai@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 12:59", paid: false },
+      { id: 26, rowNumber: 27, name: "Sylvia Mariana", whatsapp: "8119781807", email: "sylsujapri@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 14:57", paid: false },
       { id: 27, rowNumber: 28, name: "Ricka Putri", whatsapp: "6285692079590", email: "rickaputri27@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 15:49", paid: false },
-      { id: 28, rowNumber: 29, name: "Evelyn", whatsapp: "8118418899", email: "evelyn.nila.chandra@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 17:38", paid: false },
+      { id: 28, rowNumber: 29, name: "Evelyn", whatsapp: "8118418899", email: "evelyn.nila.chandra@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 17:39", paid: false },
       { id: 29, rowNumber: 30, name: "Cindy", whatsapp: "8121212400", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 20:15", paid: false },
       { id: 30, rowNumber: 31, name: "Inggrid", whatsapp: "8170118246", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 21:41", paid: false },
       { id: 31, rowNumber: 32, name: "Ruby", whatsapp: "81212998111", email: "rubyna18@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 23:38", paid: false },
-      { id: 32, rowNumber: 33, name: "Test", whatsapp: "8128869787", email: "ceststella@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 23:38", paid: false, isTest: true },
-      { id: 33, rowNumber: 34, name: "Aulia", whatsapp: "81212791983", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 07:52", paid: false }
+      { id: 32, rowNumber: 33, name: "Aulia", whatsapp: "81212791983", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 07:52", paid: true },
+      { id: 33, rowNumber: 34, name: "Melissa Tjendana", whatsapp: "81319584381", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 15:17", paid: true },
+      { id: 34, rowNumber: 35, name: "Dita", whatsapp: "8119990949", email: "a_hendita@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 16:09", paid: false }
     ];
 
     const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v2';
