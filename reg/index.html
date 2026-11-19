@@ -1019,7 +1019,7 @@ function doPost(e) {
   }
 }`;
 
-       const INITIAL_CSV_GUESTS = [
+    const INITIAL_CSV_GUESTS = [
       { id: 1, rowNumber: 2, name: "Stella Nurina Susanto", whatsapp: "08128869787", email: "stellanurina@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-19 16:31", paid: true, birthdayDay: "02", birthdayMonth: "07", birthdayYear: "1986" },
       { id: 2, rowNumber: 3, name: "Jesica Silviani", whatsapp: "0811300700", email: "silvianijesica1@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-20 11:25", paid: true },
       { id: 3, rowNumber: 4, name: "Eve", whatsapp: "81281212000", email: "brijer2000@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 10:44", paid: false },
@@ -1056,7 +1056,8 @@ function doPost(e) {
       { id: 34, rowNumber: 35, name: "Dita", whatsapp: "8119990949", email: "a_hendita@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 16:09", paid: false }
     ];
 
-    const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v2';
+    // Bumped from v2 -> v3 so browsers drop the old 47-guest list saved locally
+    const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v3';
     const SHEET_URL_KEY = 'wfm_charmingly_yours_sheet_url_v1';
     const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbw9MuOzZNzf7WfPkKVbmekkitIj1sLnfwudiqmQidqmPSASaM0xvSELkFH6LnPMBioC/exec';
 
