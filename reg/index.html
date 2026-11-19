@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
   <title>Charmingly Yours — WFM Bag Charm Workshop Registrar</title>
   <link rel="icon" type="image/svg+xml" href="../images/favicon.svg" />
   <link rel="icon" type="image/png" href="../images/wfm-logo.png" />
@@ -140,6 +142,21 @@
 </head>
 <body class="min-h-screen flex flex-col selection:bg-pinkPrimary/40 selection:text-slateDark">
 
+  <!-- Passcode screen: nothing loads until the host enters the passcode -->
+  <div id="lock-screen" class="hidden fixed inset-0 z-[60] bg-blushBg flex items-center justify-center p-4">
+    <form onsubmit="submitPasscode(event)" class="bg-white rounded-3xl max-w-sm w-full border border-borderPink shadow-xl p-7 space-y-4 text-center">
+      <div class="w-12 h-12 rounded-full bg-blushSoft text-pinkDeep mx-auto flex items-center justify-center text-xl">🔒</div>
+      <div>
+        <div class="text-[11px] font-extrabold uppercase tracking-wider text-pinkDeep">Charmingly Yours • Host Check-In</div>
+        <h2 class="text-xl font-extrabold text-slateDark mt-1">Enter the passcode</h2>
+        <p class="text-xs text-slateMuted mt-1">Ask the event organiser. You only need to enter it once on this device.</p>
+      </div>
+      <input id="lock-input" type="password" autocomplete="current-password" placeholder="Passcode" class="w-full px-4 py-3 rounded-xl bg-blushBg border border-borderPink focus:border-pinkDeep outline-none text-center text-lg font-extrabold tracking-widest" />
+      <p id="lock-error" class="hidden text-xs font-bold text-pinkDeep"></p>
+      <button id="lock-submit" type="submit" class="w-full py-3 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-sm font-extrabold transition">Unlock</button>
+    </form>
+  </div>
+
   <!-- Printable door list (filled in by printDoorList) -->
   <div id="print-sheet" aria-hidden="true"></div>
 
@@ -241,6 +258,9 @@
                 <input type="file" accept=".csv" onchange="closeMoreMenu(); handleCSVImport(event)" class="hidden" />
               </label>
               <div class="my-1 border-t border-borderPink"></div>
+              <button onclick="closeMoreMenu(); lockAndClearDevice()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-pinkDeep transition cursor-pointer">
+                <span class="w-5 text-center">🔒</span><span>Lock &amp; clear this device</span>
+              </button>
               <button onclick="closeMoreMenu(); openSheetSetupModal()" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl hover:bg-blushBg text-left text-sm font-bold text-slateDark transition cursor-pointer">
                 <span class="w-5 text-center">⚙️</span><span>Sheet setup</span>
               </button>
@@ -305,7 +325,7 @@
           </span>
         </div>
         <div class="mt-2 flex items-baseline gap-2">
-          <span id="kpi-total" class="text-2xl sm:text-3xl font-extrabold text-slateDark">32</span>
+          <span id="kpi-total" class="text-2xl sm:text-3xl font-extrabold text-slateDark">0</span>
           <span id="kpi-total-sub" class="text-xs text-slateMuted font-semibold">active</span>
         </div>
       </div>
@@ -320,10 +340,10 @@
         </div>
         <div class="mt-2">
           <div class="flex items-baseline gap-1.5">
-            <span id="kpi-paid" class="text-2xl sm:text-3xl font-extrabold text-tealDeep">11</span>
-            <span id="kpi-paid-denom" class="text-sm font-bold text-slateMuted">/ 32</span>
+            <span id="kpi-paid" class="text-2xl sm:text-3xl font-extrabold text-tealDeep">0</span>
+            <span id="kpi-paid-denom" class="text-sm font-bold text-slateMuted">/ 0</span>
           </div>
-          <div id="kpi-paid-amount" class="text-xs font-bold text-tealDeep mt-0.5">Rp 1.650.000</div>
+          <div id="kpi-paid-amount" class="text-xs font-bold text-tealDeep mt-0.5">Rp 0</div>
         </div>
       </div>
 
@@ -337,10 +357,10 @@
         </div>
         <div class="mt-2">
           <div class="flex items-baseline gap-1.5">
-            <span id="kpi-unpaid" class="text-2xl sm:text-3xl font-extrabold text-amberWarm">21</span>
+            <span id="kpi-unpaid" class="text-2xl sm:text-3xl font-extrabold text-amberWarm">0</span>
             <span class="text-xs font-semibold text-slateMuted">due</span>
           </div>
-          <div id="kpi-unpaid-amount" class="text-xs font-bold text-amberWarm mt-0.5">Rp 3.150.000</div>
+          <div id="kpi-unpaid-amount" class="text-xs font-bold text-amberWarm mt-0.5">Rp 0</div>
         </div>
       </div>
 
@@ -355,7 +375,7 @@
         <div class="mt-2">
           <div class="flex items-baseline gap-1.5">
             <span id="kpi-checked-in" class="text-2xl sm:text-3xl font-extrabold text-tealDeep">0</span>
-            <span id="kpi-checked-denom" class="text-sm font-bold text-slateMuted">/ 32</span>
+            <span id="kpi-checked-denom" class="text-sm font-bold text-slateMuted">/ 0</span>
           </div>
           <div class="w-full bg-blushBg rounded-full h-1.5 mt-2 overflow-hidden">
             <div id="kpi-checkin-bar" class="bg-tealAccent h-1.5 rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -374,7 +394,7 @@
         <div class="mt-2">
           <div class="flex items-baseline gap-1.5">
             <span id="kpi-birthdays" class="text-2xl sm:text-3xl font-extrabold text-pinkDeep">0</span>
-            <span id="kpi-birthdays-denom" class="text-sm font-bold text-slateMuted">/ 32</span>
+            <span id="kpi-birthdays-denom" class="text-sm font-bold text-slateMuted">/ 0</span>
           </div>
           <div id="kpi-nov-birthdays" class="text-xs font-semibold text-slateMuted mt-0.5">0 November birthdays</div>
         </div>
@@ -392,7 +412,7 @@
             id="search-input"
             autofocus
             oninput="handleSearch(this.value)"
-            placeholder="Search by Name, WhatsApp, or Email..."
+            placeholder="Search by name or WhatsApp digits..."
             class="w-full pl-11 pr-10 py-2.5 rounded-xl bg-blushBg border border-borderPink focus:border-pinkDeep focus:ring-2 focus:ring-pinkPrimary/40 outline-none text-sm font-medium transition"
           />
           <button id="clear-search-btn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slateMuted hover:text-slateDark p-1">
@@ -417,19 +437,19 @@
       <!-- Filter Tabs Row -->
       <div class="flex items-center gap-1.5 pt-1 overflow-x-auto no-scrollbar" id="filter-pills">
         <button data-filter="all" onclick="setFilter('all')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-extrabold transition bg-slateDark text-white shrink-0">
-          All (<span id="count-all">32</span>)
+          All (<span id="count-all">0</span>)
         </button>
         <button data-filter="paid" onclick="setFilter('paid')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-blushBg text-slateMuted hover:bg-blushSoft shrink-0">
-          Paid (<span id="count-paid">11</span>)
+          Paid (<span id="count-paid">0</span>)
         </button>
         <button data-filter="unpaid" onclick="setFilter('unpaid')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-blushBg text-slateMuted hover:bg-blushSoft shrink-0">
-          Unpaid (<span id="count-unpaid">21</span>)
+          Unpaid (<span id="count-unpaid">0</span>)
         </button>
         <button data-filter="checked-in" onclick="setFilter('checked-in')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-blushBg text-slateMuted hover:bg-blushSoft shrink-0">
           Checked In (<span id="count-checked-in">0</span>)
         </button>
         <button data-filter="not-checked-in" onclick="setFilter('not-checked-in')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-blushBg text-slateMuted hover:bg-blushSoft shrink-0">
-          Not Checked In (<span id="count-not-checked-in">32</span>)
+          Not Checked In (<span id="count-not-checked-in">0</span>)
         </button>
         <button data-filter="nov-birthdays" onclick="setFilter('nov-birthdays')" class="filter-pill px-3.5 py-1.5 rounded-full text-xs font-bold transition bg-blushBg text-slateMuted hover:bg-blushSoft shrink-0">
           Nov Birthdays 🎂 (<span id="count-nov-birthdays">0</span>)
@@ -682,7 +702,7 @@
             </div>
             <div>
               <label class="block text-[11px] font-bold text-slateMuted mb-1">Host / Payment Note</label>
-              <input type="text" id="modal-payment-note" placeholder="e.g. Paid w/ Eve, Trf BCA..." class="w-full px-3 py-2 rounded-xl bg-blushBg border border-borderPink text-xs font-medium outline-none focus:border-pinkDeep" />
+              <input type="text" id="modal-payment-note" placeholder="e.g. Paid with a friend, Trf BCA..." class="w-full px-3 py-2 rounded-xl bg-blushBg border border-borderPink text-xs font-medium outline-none focus:border-pinkDeep" />
             </div>
           </div>
         </div>
@@ -901,22 +921,42 @@
  *
  * Fixes vs previous version:
  *  - Birthday / Check-In Time / Timestamp cells that Sheets auto-converted to Dates are
- *    returned as clean text ("2 Jul 1986", "10:15"), so the site can actually read them.
+ *    returned as clean text ("12 Nov 1990", "10:15"), so the site can actually read them.
  *  - Birthday, Check-In Time and WhatsApp are written as plain text so Sheets doesn't
- *    turn "2 Jul 1986" into a date or "08128869787" into a number.
+ *    turn "12 Nov" into a date or "0812..." into a number.
  *  - An empty birthday / note / payment method from the site no longer wipes a real
  *    value already in the sheet.
  *  - Payment Method is returned as it really is in the sheet (no invented "Bank Transfer").
  *  - Rows are matched by the original registration name in the Invite Share URL too, so a
- *    guest whose name was tidied up in the sheet (e.g. "Imelda N." -> "Imelda Natalia")
+ *    guest whose name was tidied up in the sheet (e.g. "Ann T." -> "Ann Tan")
  *    updates her real row instead of creating a fake walk-in row.
  *  - A registrant who is in Sheet1 but missing from "Check In" is copied from her real
  *    Sheet1 row (real timestamp, referral, invite URL) instead of a made-up walk-in row.
+ *
+ * SECURITY — passcode:
+ *  Reading the guest list (GET) and check-in updates (POST action "checkin_update") only work
+ *  when the request carries the passcode stored in Project Settings → Script properties →
+ *  ACCESS_KEY. The passcode is never written in this code. If ACCESS_KEY isn't set, the guest
+ *  list stays locked. New signups from the wfm.stellas.digital landing page need no passcode
+ *  (they can only add a registration, never read or change anyone's details).
  */
 
 const REG_SHEET_NAME = 'Sheet1';
 const CHECKIN_SHEET_NAME = 'Check In';
 const TZ = 'Asia/Jakarta';
+
+function isAuthorized_(provided) {
+  const key = PropertiesService.getScriptProperties().getProperty('ACCESS_KEY');
+  return Boolean(key) && String(provided || '') === String(key);
+}
+
+function jsonOut_(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function unauthorized_() {
+  return jsonOut_({ status: 'unauthorized', message: 'Passcode required' });
+}
 
 const COL = { TS: 1, NAME: 2, WA: 3, EMAIL: 4, COUNT: 5, PRICE: 6, INVITE: 7, REF: 8, URL: 9,
               PAY: 10, METHOD: 11, BDAY: 12, CHECKED: 13, TIME: 14, NOTES: 15 };
@@ -928,7 +968,7 @@ function normalizePhone_(val) {
   return digits;
 }
 
-// Original registration name, taken from ".../invite.html?name=Imelda%20N."
+// Original registration name, taken from ".../invite.html?name=Ann%20T."
 function urlName_(url) {
   const m = String(url || '').match(/[?&]name=([^&#]*)/);
   if (!m) return '';
@@ -943,7 +983,7 @@ function text_(v) {
   return String(v === null || v === undefined ? '' : v).trim();
 }
 
-// Birthday cell -> "2 Jul 1986" / "12 Nov" (Sheets often stores these as real Dates)
+// Birthday cell -> "12 Nov 1990" / "12 Nov" (Sheets often stores these as real Dates)
 function birthdayText_(v) {
   if (!isDate_(v)) return text_(v);
   const y = Number(Utilities.formatDate(v, TZ, 'yyyy'));
@@ -987,7 +1027,7 @@ function setTextFormats_(sheet, row) {
  * Finds the row (1-based) for a guest. Order:
  *  1. Name (sheet name OR original name in invite URL) + phone
  *  2. Name alone
- *  3. Phone alone, only if exactly one row has that phone (Eve & Maria Evelyn share one)
+ *  3. Phone alone, only if exactly one row has that phone (two guests can share one)
  */
 function findRow_(data, name, phone) {
   const target = String(name || '').trim().toLowerCase();
@@ -1039,6 +1079,7 @@ function rowToGuest_(r, rowNumber) {
 
 // GET: Reads the 15-column "Check In" tab + any new signups from "Sheet1"
 function doGet(e) {
+  if (!isAuthorized_(e && e.parameter && e.parameter.key)) return unauthorized_();
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const checkInSheet = getOrCreateCheckInSheet_(ss);
   const regSheet = ss.getSheetByName(REG_SHEET_NAME);
@@ -1093,6 +1134,7 @@ function doPost(e) {
 
     // 1. Registrar Check-In / Payment / Birthday Update -> "Check In" tab
     if (payload.action === 'checkin_update') {
+      if (!isAuthorized_(payload.key)) return unauthorized_();
       const sheet = getOrCreateCheckInSheet_(ss);
       const data = sheet.getDataRange().getValues();
       const targetPhone = normalizePhone_(payload.whatsapp);
@@ -1216,45 +1258,15 @@ function doPost(e) {
       ? document.getElementById('apps-script-source').textContent.trim()
       : '';
 
-    const INITIAL_CSV_GUESTS = [
-      { id: 1, rowNumber: 2, name: "Stella Nurina Susanto", whatsapp: "08128869787", email: "stellanurina@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-19 16:31", paid: true, birthdayDay: "02", birthdayMonth: "07", birthdayYear: "1986" },
-      { id: 2, rowNumber: 3, name: "Jesica Silviani", whatsapp: "0811300700", email: "silvianijesica1@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-10-20 11:25", paid: true },
-      { id: 3, rowNumber: 4, name: "Eve", whatsapp: "81281212000", email: "brijer2000@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 10:44", paid: false },
-      { id: 4, rowNumber: 5, name: "Imelda Natalia", whatsapp: "818331223", email: "imelda.natalia80@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-10-30 14:55", paid: true },
-      { id: 5, rowNumber: 6, name: "Katharina", whatsapp: "81288153912", email: "katharina.inkiriwang@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-04 11:29", paid: true },
-      { id: 6, rowNumber: 7, name: "Melissa Rezanova", whatsapp: "81310978478", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-04 12:49", paid: true },
-      { id: 7, rowNumber: 8, name: "Maria Evelyn", whatsapp: "81281212000", email: "brijer2000@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-11 09:14", paid: true },
-      { id: 8, rowNumber: 9, name: "Evelyn Ferdina", whatsapp: "81287898900", email: "ef.soesantio@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-11 09:24", paid: true },
-      { id: 9, rowNumber: 10, name: "Rerey (Reynita Octavianty)", whatsapp: "81258230064", email: "hijau_cake99@yahoo.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-13 20:02", paid: true },
-      { id: 10, rowNumber: 11, name: "Amelie", whatsapp: "6281219720178", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-14 16:04", paid: false },
-      { id: 11, rowNumber: 12, name: "Alena Supit", whatsapp: "816750307", email: "alenaullmer@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-15 11:42", paid: false },
-      { id: 12, rowNumber: 13, name: "Lydiana Isabel Tan", whatsapp: "817893089", email: "lydianatan@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-15 12:24", paid: false },
-      { id: 13, rowNumber: 14, name: "Nana Sindu", whatsapp: "81806733368", email: "", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-16 16:46", paid: false },
-      { id: 14, rowNumber: 15, name: "Euneke Yoelina Lim", whatsapp: "6583028080", email: "euneke.lim@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-16 20:08", paid: false },
-      { id: 15, rowNumber: 16, name: "Narae Yang", whatsapp: "0831-9883-6685", email: "backhand35@naver.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 08:24", paid: false },
-      { id: 16, rowNumber: 17, name: "Viona Erika Hioe", whatsapp: "82114811423", email: "v.e.hioe@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 10:12", paid: true },
-      { id: 17, rowNumber: 18, name: "Chintia Otami", whatsapp: "82118999021", email: "chintiao.md@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 14:21", paid: false },
-      { id: 18, rowNumber: 19, name: "Adrianne", whatsapp: "811928778", email: "adriannemahendra83@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-17 15:33", paid: false },
-      { id: 19, rowNumber: 20, name: "Novaria", whatsapp: "8132263626", email: "navyhtnouvha@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 06:23", paid: true },
-      { id: 20, rowNumber: 21, name: "Desy Natalia", whatsapp: "6281314755511", email: "desynatalia703@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 06:28", paid: false },
-      { id: 21, rowNumber: 22, name: "imelda", whatsapp: "628111777843", email: "canvas90012@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 07:40", paid: false },
-      { id: 22, rowNumber: 23, name: "Irene Stephanie", whatsapp: "6594323656", email: "irene_stephanie@ymail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 09:56", paid: false },
-      { id: 23, rowNumber: 24, name: "Yoanna Kristin", whatsapp: "87880050090", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 11:57", paid: true },
-      { id: 24, rowNumber: 25, name: "Christine Sagita", whatsapp: "82190064076", email: "christine_sagita@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 12:31", paid: true },
-      { id: 25, rowNumber: 26, name: "Alodia Aurora Farichai", whatsapp: "8179014050", email: "alodia.farichai@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 12:59", paid: false },
-      { id: 26, rowNumber: 27, name: "Sylvia Mariana", whatsapp: "8119781807", email: "sylsujapri@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 14:57", paid: false },
-      { id: 27, rowNumber: 28, name: "Ricka Putri", whatsapp: "6285692079590", email: "rickaputri27@gmail.com", charms: 2, price: 150000, inviteStatus: "Yes — they'll register with their own link", registeredAt: "2026-11-18 15:49", paid: false },
-      { id: 28, rowNumber: 29, name: "Evelyn", whatsapp: "8118418899", email: "evelyn.nila.chandra@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 17:39", paid: false },
-      { id: 29, rowNumber: 30, name: "Cindy", whatsapp: "8121212400", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 20:15", paid: false },
-      { id: 30, rowNumber: 31, name: "Inggrid", whatsapp: "8170118246", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 21:41", paid: false },
-      { id: 31, rowNumber: 32, name: "Ruby", whatsapp: "81212998111", email: "rubyna18@gmail.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-18 23:38", paid: false },
-      { id: 32, rowNumber: 33, name: "Aulia", whatsapp: "81212791983", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 07:52", paid: true },
-      { id: 33, rowNumber: 34, name: "Melissa Tjendana", whatsapp: "81319584381", email: "", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 15:17", paid: true },
-      { id: 34, rowNumber: 35, name: "Dita", whatsapp: "8119990949", email: "a_hendita@yahoo.com", charms: 2, price: 150000, inviteStatus: "No, flying solo", registeredAt: "2026-11-19 16:09", paid: false }
-    ];
+    // No guest details are stored in this file any more (anyone can read a web page's source).
+    // The list is loaded from the Google Sheet after the host enters the passcode.
+    const INITIAL_CSV_GUESTS = [];
 
-    // Bumped from v2 -> v3 so browsers drop the old 47-guest list saved locally
-    const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v3';
+    // v4: the list on each device now only comes from the passcode-protected sheet
+    const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v4';
+    const OLD_STORAGE_KEYS = ['wfm_charmingly_yours_registrar_v1', 'wfm_charmingly_yours_registrar_v2', 'wfm_charmingly_yours_registrar_v3'];
+    const ACCESS_KEY_STORAGE = 'wfm_charmingly_yours_access_v1';
+    let accessKey = '';
     const SHEET_URL_KEY = 'wfm_charmingly_yours_sheet_url_v1';
     const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/AKfycbw9MuOzZNzf7WfPkKVbmekkitIj1sLnfwudiqmQidqmPSASaM0xvSELkFH6LnPMBioC/exec';
 
@@ -1293,16 +1305,102 @@ function doPost(e) {
     function initApp() {
       populateDateDropdowns();
       document.getElementById('apps-script-code-box').value = GOOGLE_APPS_SCRIPT_TEMPLATE;
-      loadPending();
+      bindKeyboardShortcuts();
+      try { OLD_STORAGE_KEYS.forEach(k => localStorage.removeItem(k)); } catch (e) {}
       loadSheetUrlFromStorage();
+      try { accessKey = localStorage.getItem(ACCESS_KEY_STORAGE) || ''; } catch (e) { accessKey = ''; }
+
+      if (!accessKey) {
+        // No passcode on this device: nothing is shown or kept until it's entered
+        try { localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(PENDING_KEY); } catch (e) {}
+        guests = [];
+        renderAll();
+        showLockScreen();
+        return;
+      }
+      startUnlocked();
+    }
+
+    function startUnlocked() {
+      hideLockScreen();
+      loadPending();
       loadGuestsFromStorage();
       renderAll();
-      bindKeyboardShortcuts();
-
       if (googleSheetUrl && !googleSheetUrl.includes('PASTE_YOUR_EXEC_ID_HERE')) {
         syncFromGoogleSheet(false);
         startAutoSync();
       }
+    }
+
+    // ---- Passcode screen ----------------------------------------------------
+    function showLockScreen(message) {
+      document.getElementById('lock-screen').classList.remove('hidden');
+      document.getElementById('lock-error').textContent = message || '';
+      document.getElementById('lock-error').classList.toggle('hidden', !message);
+      const input = document.getElementById('lock-input');
+      input.value = '';
+      setTimeout(() => input.focus(), 50);
+    }
+
+    function hideLockScreen() {
+      document.getElementById('lock-screen').classList.add('hidden');
+    }
+
+    // Called when the sheet says the passcode is wrong (e.g. it was changed).
+    // Unsent changes stay on the device and go through once the new passcode is entered.
+    function lockApp(message) {
+      accessKey = '';
+      try { localStorage.removeItem(ACCESS_KEY_STORAGE); } catch (e) {}
+      showLockScreen(message || 'Please enter the passcode again.');
+    }
+
+    async function submitPasscode(event) {
+      if (event) event.preventDefault();
+      const input = document.getElementById('lock-input');
+      const btn = document.getElementById('lock-submit');
+      const key = input.value.trim();
+      if (!key) return;
+      if (!googleSheetUrl) {
+        showLockScreen('No Google Sheet is connected to this page.');
+        return;
+      }
+      btn.disabled = true;
+      btn.textContent = 'Checking…';
+      try {
+        const res = await fetch(sheetGetUrl(key), { method: 'GET' });
+        const data = await res.json();
+        if (data && data.status === 'unauthorized') {
+          showLockScreen('That passcode isn\'t right. Please try again.');
+          return;
+        }
+        if (!data || !Array.isArray(data.rows)) throw new Error('Unexpected response');
+        accessKey = key;
+        try { localStorage.setItem(ACCESS_KEY_STORAGE, key); } catch (e) {}
+        startUnlocked();
+      } catch (err) {
+        console.warn('Passcode check failed:', err);
+        showLockScreen('Can\'t reach the Google Sheet. Check the internet connection and try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Unlock';
+      }
+    }
+
+    function sheetGetUrl(key) {
+      return googleSheetUrl + (googleSheetUrl.includes('?') ? '&' : '?') + 'key=' + encodeURIComponent(key || '');
+    }
+
+    // ⋯ More → Lock & clear this device (for after the event)
+    function lockAndClearDevice() {
+      const unsent = pendingIds.size;
+      const warning = unsent
+        ? `${unsent} change${unsent === 1 ? ' hasn\'t' : 's haven\'t'} reached the Google Sheet yet and will be lost. Lock and clear anyway?`
+        : 'This removes the guest list and passcode from this device. The Google Sheet is not affected. Continue?';
+      if (!window.confirm(warning)) return;
+      try {
+        [STORAGE_KEY, PENDING_KEY, ACCESS_KEY_STORAGE, ...OLD_STORAGE_KEYS].forEach(k => localStorage.removeItem(k));
+      } catch (e) {}
+      window.location.reload();
     }
 
     function populateDateDropdowns() {
@@ -1453,6 +1551,7 @@ function doPost(e) {
     let pendingIds = new Set();
     let pushChain = Promise.resolve();
     let syncInFlight = false;
+    let lastSyncedAtFull = null;
 
     function loadPending() {
       try { pendingIds = new Set(JSON.parse(localStorage.getItem(PENDING_KEY) || '[]')); } catch (e) { pendingIds = new Set(); }
@@ -1490,12 +1589,22 @@ function doPost(e) {
         .some(id => !document.getElementById(id).classList.contains('hidden'));
     }
 
-    async function syncFromGoogleSheet(showFeedback = true) {
+    let currentSync = null;
+
+    // Returns true when the latest data was read from the sheet, false otherwise.
+    // If a sync is already running, callers wait for that one instead of starting another.
+    function syncFromGoogleSheet(showFeedback = true) {
       if (!googleSheetUrl) {
         if (showFeedback) openSheetSetupModal();
-        return;
+        return Promise.resolve(false);
       }
-      if (syncInFlight) return;
+      if (!accessKey) return Promise.resolve(false);
+      if (currentSync) return currentSync;
+      currentSync = runSync(showFeedback).finally(() => { currentSync = null; });
+      return currentSync;
+    }
+
+    async function runSync(showFeedback) {
       syncInFlight = true;
 
       // Send any changes that haven't reached the sheet yet before reading it back
@@ -1504,43 +1613,54 @@ function doPost(e) {
 
       updateSyncStatusUI('syncing');
       try {
-        const res = await fetch(googleSheetUrl, { method: 'GET' });
+        const res = await fetch(sheetGetUrl(accessKey), { method: 'GET' });
         if (!res.ok) throw new Error('HTTP ' + res.status);
         const data = await res.json();
 
+        if (data && data.status === 'unauthorized') {
+          updateSyncStatusUI('error');
+          lockApp('The passcode has changed. Please enter the new one.');
+          return false;
+        }
+
         if (data && Array.isArray(data.rows)) {
+          // The Google Sheet is the source of truth: the page mirrors it, except for
+          // changes made on this device that haven't reached the sheet yet.
+          const matchedIds = new Set();
           data.rows.forEach(sheetRow => {
             if (!sheetRow.name) return;
             const sheetPaid = String(sheetRow.paymentStatus || '').toLowerCase() === 'paid';
             const sheetCheckedIn = String(sheetRow.checkedIn || '').toLowerCase() === 'yes' || sheetRow.checkedIn === true;
             const parsedBday = parseBirthdayStringFromSheet(sheetRow.birthday);
 
-            const existing = findLocalGuestForSheetRow(sheetRow);
+            let existing = findLocalGuestForSheetRow(sheetRow);
+            if (existing && matchedIds.has(existing.id)) existing = null;
 
             if (existing) {
-              // Local edits that haven't reached the sheet yet win over the sheet
+              matchedIds.add(existing.id);
               if (pendingIds.has(existing.id)) return;
 
               existing.name = String(sheetRow.name).trim() || existing.name;
-              if (sheetRow.whatsapp) existing.whatsapp = String(sheetRow.whatsapp);
-              if (sheetRow.email) existing.email = sheetRow.email;
+              existing.whatsapp = String(sheetRow.whatsapp || existing.whatsapp);
+              existing.email = sheetRow.email || '';
               existing.rowNumber = sheetRow.rowNumber || existing.rowNumber;
-              if (Number(sheetRow.charmCount)) existing.charms = Number(sheetRow.charmCount);
-              if (Number(sheetRow.charmPrice)) existing.price = Number(sheetRow.charmPrice);
-              existing.paid = sheetPaid || existing.paid;
-              if (sheetRow.paymentMethod) existing.paymentMethod = sheetRow.paymentMethod;
+              existing.charms = Number(sheetRow.charmCount) || 2;
+              existing.price = Number(sheetRow.charmPrice) || (150000 + Math.max(0, existing.charms - 2) * 50000);
+              existing.inviteStatus = sheetRow.inviteStatus || existing.inviteStatus;
+              if (sheetRow.registeredAt) existing.registeredAt = sheetRow.registeredAt;
+              existing.paid = sheetPaid;
+              existing.paymentMethod = sheetPaid ? (sheetRow.paymentMethod || '') : '';
               if (parsedBday.day && parsedBday.month) {
                 existing.birthdayDay = parsedBday.day;
                 existing.birthdayMonth = parsedBday.month;
                 existing.birthdayYear = parsedBday.year;
               }
-              if (sheetCheckedIn) {
-                existing.checkedIn = true;
-                existing.checkInTime = sheetRow.checkInTime || existing.checkInTime;
-              }
-              if (sheetRow.notes) existing.notes = sheetRow.notes;
+              existing.checkedIn = sheetCheckedIn;
+              existing.checkInTime = sheetCheckedIn ? (sheetRow.checkInTime || existing.checkInTime) : '';
+              existing.notes = sheetRow.notes || '';
             } else {
               const nextId = guests.reduce((m, g) => Math.max(m, g.id), 0) + 1;
+              matchedIds.add(nextId);
               guests.push({
                 id: nextId,
                 rowNumber: sheetRow.rowNumber || nextId + 1,
@@ -1553,16 +1673,23 @@ function doPost(e) {
                 registeredAt: sheetRow.registeredAt || '',
                 isTest: String(sheetRow.name).trim().toLowerCase() === 'test',
                 paid: sheetPaid,
-                paymentMethod: sheetRow.paymentMethod || '',
+                paymentMethod: sheetPaid ? (sheetRow.paymentMethod || '') : '',
                 notes: sheetRow.notes || '',
                 birthdayDay: parsedBday.day,
                 birthdayMonth: parsedBday.month,
                 birthdayYear: parsedBday.year,
                 checkedIn: sheetCheckedIn,
-                checkInTime: sheetRow.checkInTime || ''
+                checkInTime: sheetCheckedIn ? (sheetRow.checkInTime || '') : ''
               });
             }
           });
+
+          // Drop guests that aren't in the sheet any more (old copies on this device),
+          // but keep anything added here that is still waiting to be sent.
+          // (Skipped if the sheet came back empty, so a hiccup can never wipe the list.)
+          if (data.rows.length > 0) {
+            guests = guests.filter(g => matchedIds.has(g.id) || pendingIds.has(g.id));
+          }
 
           saveGuestsToStorage();
           lastSyncedAt = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
@@ -1571,6 +1698,8 @@ function doPost(e) {
           if (showFeedback) {
             showToast(`Synced ${data.rows.length} rows from Google Sheet ✓`, 'success');
           }
+          lastSyncedAtFull = new Date();
+          return true;
         } else {
           throw new Error('Unexpected response format');
         }
@@ -1580,6 +1709,7 @@ function doPost(e) {
         if (showFeedback) {
           showToast('Could not reach the Google Sheet. Changes are saved on this device and will sync when it reconnects.', 'warning');
         }
+        return false;
       } finally {
         syncInFlight = false;
       }
@@ -1597,18 +1727,19 @@ function doPost(e) {
         inviteStatus: guest.inviteStatus,
         registeredAt: guest.registeredAt,
         paymentStatus: guest.paid ? 'Paid' : 'Unpaid',
-        paymentMethod: guest.paid ? (guest.paymentMethod || 'Bank Transfer') : '',
+        paymentMethod: guest.paid ? (guest.paymentMethod || '') : '',
         birthday: formatBirthdayDisplay(guest),
         checkedIn: guest.checkedIn,
         checkInTime: guest.checkInTime || '',
         notes: guest.notes || '',
-        notesFinal: true
+        notesFinal: true,
+        key: accessKey
       };
     }
 
     async function sendGuestToSheet(id) {
       const guest = guests.find(g => g.id === id);
-      if (!guest || !googleSheetUrl) return;
+      if (!guest || !googleSheetUrl || !accessKey) return;
 
       updateSyncStatusUI('syncing');
       try {
@@ -1620,6 +1751,10 @@ function doPost(e) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         let body = null;
         try { body = await res.json(); } catch (e) {}
+        if (body && body.status === 'unauthorized') {
+          lockApp('The passcode has changed. Please enter the new one.');
+          throw new Error('Passcode rejected');
+        }
         if (body && body.status && body.status !== 'ok') throw new Error('Script error');
 
         pendingIds.delete(id);
@@ -1723,6 +1858,19 @@ function doPost(e) {
     // =========================================================================
     // 5. FORMATTING & HELPER UTILITIES
     // =========================================================================
+    // Check-in time is saved with the date ("2026-11-20 10:15") so the sheet keeps a full record;
+    // the screen only shows the time.
+    function checkInStamp() {
+      const d = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function shortTime(stamp) {
+      const m = String(stamp || '').match(/(\d{1,2}:\d{2})/);
+      return m ? m[1] : String(stamp || '');
+    }
+
     function formatRupiah(amount) {
       return 'Rp ' + Number(amount || 0).toLocaleString('id-ID');
     }
@@ -1842,7 +1990,7 @@ function doPost(e) {
         if (searchQuery.trim() !== '') {
           const q = searchQuery.toLowerCase().trim();
           const nameMatch = g.name.toLowerCase().includes(q);
-          const emailMatch = g.email.toLowerCase().includes(q);
+          const emailMatch = false; // emails are hidden at the desk
           const waDigits = g.whatsapp.replace(/\D/g, '');
           const qDigits = q.replace(/\D/g, '');
           const waMatch = g.whatsapp.toLowerCase().includes(q) || (qDigits.length >= 3 && waDigits.includes(qDigits));
@@ -1978,13 +2126,8 @@ function doPost(e) {
                 <div class="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-xs text-slateMuted font-semibold">
                   <a href="${wa.link}" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-slateDark hover:text-tealDeep font-bold transition" title="Open WhatsApp chat">
                     <svg class="w-3.5 h-3.5 text-tealDeep" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
-                    <span>${escapeHTML(wa.display)}</span>
+                    <span>${escapeHTML(maskWhatsApp(g.whatsapp))}</span>
                   </a>
-
-                  ${g.email ? `
-                    <span class="text-borderPink">•</span>
-                    <span class="truncate max-w-[190px]">${escapeHTML(g.email)}</span>
-                  ` : ''}
 
                   <span class="text-borderPink">•</span>
                   <span class="font-bold text-slateDark">${g.charms} Charms • ${formatRupiah(g.price)}</span>
@@ -2012,7 +2155,7 @@ function doPost(e) {
                 }"
               >
                 ${g.paid
-                  ? `<span>Paid ✓</span><span class="opacity-80 text-[11px] hidden sm:inline">(${escapeHTML(g.paymentMethod || 'Transfer')})</span>`
+                  ? `<span>Paid ✓</span>${g.paymentMethod ? `<span class="opacity-80 text-[11px] hidden sm:inline">(${escapeHTML(g.paymentMethod)})</span>` : ''}`
                   : `<span>Unpaid</span>`
                 }
               </button>
@@ -2044,11 +2187,11 @@ function doPost(e) {
               ${g.checkedIn ? `
                 <button
                   onclick="undoCheckIn(${g.id})"
-                  title="Checked in at ${escapeHTML(g.checkInTime)}. Click to undo."
+                  title="Checked in ${escapeHTML(g.checkInTime)}. Click to undo."
                   class="px-4 py-2 rounded-xl bg-tealDeep text-white text-xs font-extrabold flex items-center gap-1.5 shadow-2xs hover:bg-tealDeep/90 transition shrink-0"
                 >
                   <span>Checked In ✓</span>
-                  <span class="text-[11px] opacity-90">(${escapeHTML(g.checkInTime)})</span>
+                  <span class="text-[11px] opacity-90">(${escapeHTML(shortTime(g.checkInTime))})</span>
                 </button>
               ` : g.paid ? `
                 <button
@@ -2109,7 +2252,7 @@ function doPost(e) {
         return;
       }
       g.checkedIn = true;
-      g.checkInTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      g.checkInTime = checkInStamp();
       saveGuestsToStorage();
       renderAll();
       pushGuestUpdateToGoogleSheet(g);
@@ -2247,7 +2390,6 @@ function doPost(e) {
       document.getElementById('modal-price-tag').textContent = `${charmCount} Charms • ${formatRupiah(g.price)}`;
       document.getElementById('modal-guest-meta').innerHTML = `
         <span>📱 ${escapeHTML(wa.display)}</span>
-        ${g.email ? `<span>• ✉️ ${escapeHTML(g.email)}</span>` : ''}
         <span>• ${escapeHTML(g.inviteStatus)}</span>
       `;
 
@@ -2365,7 +2507,7 @@ function doPost(e) {
 
       if (alsoCheckIn) {
         g.checkedIn = true;
-        g.checkInTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+        g.checkInTime = checkInStamp();
       }
 
       saveGuestsToStorage();
@@ -2509,7 +2651,7 @@ function doPost(e) {
       if (!g) return;
 
       if (g.checkedIn) {
-        showToast(`${g.name} is already checked in${g.checkInTime ? ' (' + g.checkInTime + ')' : ''} ✓ — see the host desk if this isn't you.`, 'success');
+        showToast(`${g.name} is already checked in${g.checkInTime ? ' (' + shortTime(g.checkInTime) + ')' : ''} ✓ — see the host desk if this isn't you.`, 'success');
         return;
       }
 
@@ -2573,7 +2715,7 @@ function doPost(e) {
       g.birthdayMonth = bMonth;
       g.birthdayYear = bYear;
       g.checkedIn = true;
-      g.checkInTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      g.checkInTime = checkInStamp();
 
       saveGuestsToStorage();
       renderAll();
@@ -2684,7 +2826,7 @@ function doPost(e) {
         birthdayMonth: document.getElementById('walkin-bday-month').value,
         birthdayYear: document.getElementById('walkin-bday-year').value.trim(),
         checkedIn: isCheckedIn,
-        checkInTime: isCheckedIn ? new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : ''
+        checkInTime: isCheckedIn ? checkInStamp() : ''
       };
 
       guests.push(newGuest);
@@ -2883,7 +3025,31 @@ function doPost(e) {
     // =========================================================================
     // PRINTABLE DOOR LIST — backup if the phone or Wi-Fi fails at the door
     // =========================================================================
-    function printDoorList() {
+    // Pull the latest from the Google Sheet first, then print
+    let printBusy = false;
+    async function printDoorList() {
+      if (printBusy) return;
+      printBusy = true;
+      try {
+        let fresh = false;
+        if (googleSheetUrl) {
+          showToast('Getting the latest list from Google Sheet…', 'success');
+          fresh = await syncFromGoogleSheet(false);
+          if (!fresh) {
+            const when = lastSyncedAtFull
+              ? lastSyncedAtFull.toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })
+              : 'an earlier session';
+            if (!window.confirm(`Couldn't reach the Google Sheet. Print the copy on this device instead (last updated ${when})?`)) return;
+          }
+        }
+        buildDoorListSheet(fresh);
+        setTimeout(() => window.print(), 50);
+      } finally {
+        printBusy = false;
+      }
+    }
+
+    function buildDoorListSheet(fresh) {
       const list = guests
         .filter(g => !g.isTest)
         .slice()
@@ -2904,7 +3070,7 @@ function doPost(e) {
           <tr class="${g.paid ? '' : 'due'}">
             <td class="ps-num">${i + 1}</td>
             <td style="width:22px"><span class="ps-box"></span></td>
-            <td><div class="ps-name">${escapeHTML(g.name)}</div><div class="ps-wa">${escapeHTML(wa.display)}</div></td>
+            <td><div class="ps-name">${escapeHTML(g.name)}</div><div class="ps-wa">WA ${escapeHTML(maskWhatsApp(g.whatsapp))}</div></td>
             <td style="width:44px;text-align:center">${g.charms}</td>
             <td style="width:150px">${payCell}</td>
             <td style="width:90px">${bday ? `<span class="ps-bday">${escapeHTML(bday)}</span>` : '<span class="ps-line"></span>'}</td>
@@ -2935,7 +3101,7 @@ function doPost(e) {
             <div class="ps-title">Charmingly Yours <em>— a WFM Workshop</em></div>
             <div class="ps-meta">Fri, 20 Nov 2026 • 10:00 AM – 1:00 PM • SPH, UG Seminar Room</div>
           </div>
-          <div class="ps-stamp">Printed ${escapeHTML(printedAt)}<br/>Sorted A–Z by name</div>
+          <div class="ps-stamp">Printed ${escapeHTML(printedAt)}<br/>${fresh ? 'Live from Google Sheet' : '⚠ Offline copy from this device'}<br/>Sorted A–Z by name</div>
         </div>
         <div class="ps-stats">
           <div class="ps-stat"><b>${list.length}</b><span>Guests</span></div>
@@ -2949,8 +3115,6 @@ function doPost(e) {
         <table class="ps-table">${head}<tbody>${walkIns}</tbody></table>
         <div class="ps-foot"><span>Afterwards, update the check-in page from this sheet so the Google Sheet stays complete.</span><span>Charmingly Yours • WFM</span></div>
       `;
-
-      setTimeout(() => window.print(), 50);
     }
 
     function openResetConfirmModal() {
