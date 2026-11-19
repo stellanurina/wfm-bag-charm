@@ -830,13 +830,13 @@
     function handleLogoFallback(imgEl, svgId) {
       if (!imgEl.dataset.triedRoot) {
         imgEl.dataset.triedRoot = 'true';
-        imgEl.src = 'wfm-logo.png';
-      } else {
+        imgEl.src = 'images/wfm-logo.png';
+    } else {
         imgEl.classList.add('hidden');
         const svgEl = document.getElementById(svgId);
         if (svgEl) svgEl.classList.remove('hidden');
-      }
     }
+}
 
     // =========================================================================
     // 1. GOOGLE APPS SCRIPT TEMPLATE (Dedicated CheckIn Tab — Sheet1 Untouched)
