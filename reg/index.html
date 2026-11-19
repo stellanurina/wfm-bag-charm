@@ -4,13 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Charmingly Yours — WFM Bag Charm Workshop Registrar</title>
-  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg" />
-  <link rel="icon" type="image/png" href="../images/wfm-logo.png" />
-  <link rel="alternate icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%235CC5BA'/%3E%3C/svg%3E" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&family=Playfair+Display:ital,wght@1,500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;1,600&display=swap" rel="stylesheet" />
   <script>
     tailwind.config = {
       theme: {
@@ -20,7 +17,6 @@
             blushSoft: '#FCE7F3',
             pinkPrimary: '#F9A8C9',
             pinkDeep: '#E06D9B',
-            coralBrand: '#E86F68',
             tealAccent: '#5CC5BA',
             tealDeep: '#3AA398',
             tealLight: '#E6F7F5',
@@ -31,8 +27,7 @@
             borderPink: '#F5D0E2'
           },
           fontFamily: {
-            sans: ['Nunito', 'sans-serif'],
-            serif: ['Playfair Display', 'serif']
+            sans: ['Nunito', 'sans-serif']
           }
         }
       }
@@ -90,47 +85,20 @@
   <header id="main-header" class="bg-white/95 backdrop-blur-md border-b border-borderPink sticky top-0 z-30 shadow-2xs">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
       <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3.5">
-        <!-- Brand Logo & Event Details -->
-        <div class="flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3.5 min-w-0">
-            <!-- WFM Floral Logo -->
-            <div class="shrink-0 flex items-center justify-center">
-              <img
-                src="../images/wfm-logo.png"
-                alt="Women of Faith Ministries"
-                onerror="handleLogoFallback(this, 'host-logo-svg')"
-                class="h-14 sm:h-16 w-auto object-contain mix-blend-multiply select-none"
-              />
-              <svg id="host-logo-svg" class="hidden h-14 sm:h-16 w-auto" viewBox="0 0 260 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Women of Faith Ministries">
-                <path d="M126 105C116 86 116 63 121 46C125 53 129 58 131 61C123 73 122 89 128 104Z" fill="#29C5B5"/>
-                <path d="M123 50C115 38 117 22 127 19C136 16 141 27 135 39C131 46 126 50 123 50Z" fill="#29C5B5"/>
-                <path d="M119 46C106 39 102 25 110 18C117 12 125 20 123 33C122 40 120 45 119 46Z" fill="#29C5B5"/>
-                <path d="M117 48C103 46 95 36 99 28C103 21 113 25 116 36C118 42 118 47 117 48Z" fill="#8CD7D0"/>
-                <path d="M126 30C124 20 128 11 135 12C141 13 141 22 135 28C131 31 127 31 126 30Z" fill="#8CD7D0"/>
-                <path d="M133 44C135 28 145 14 156 17C166 20 165 34 152 42C144 47 136 46 133 44Z" fill="#8CD7D0"/>
-                <path d="M138 48C149 38 166 34 172 42C177 50 167 57 154 55C146 53 140 50 138 48Z" fill="#8CD7D0"/>
-                <path d="M134 55C147 47 166 49 169 60C172 71 159 75 147 68C140 64 135 58 134 55Z" fill="#29C5B5"/>
-                <path d="M132 63C144 61 157 68 156 77C155 85 142 86 134 78C130 73 130 66 132 63Z" fill="#8CD7D0"/>
-                <text x="12" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="600" font-size="18" letter-spacing="4.5">WOMEN</text>
-                <text x="126" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="500" font-size="11" letter-spacing="2">OF</text>
-                <text x="155" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="600" font-size="18" letter-spacing="4.5">FAITH</text>
-                <text x="158" y="103" fill="#46C1B5" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="500" font-size="17" letter-spacing="0.8">ministries</text>
-              </svg>
+        <!-- Brand & Event Details -->
+        <div class="flex items-start sm:items-center justify-between gap-3">
+          <div>
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-extrabold bg-pinkSoft text-pinkDeep tracking-wide uppercase">
+                WFM • SPH Moms
+              </span>
+              <span class="text-xs text-slateMuted font-semibold">
+                Sun 20 Nov 2026 • 10:00–13:00 • SPH UG Seminar Room
+              </span>
             </div>
-
-            <div class="min-w-0">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-blushSoft text-pinkDeep tracking-wide uppercase">
-                  WFM • SPH Moms
-                </span>
-                <span class="text-xs text-slateMuted font-semibold">
-                  Fri, 20 Nov 2026 • 10:00 AM – 1:00 PM • SPH, UG Seminar Room
-                </span>
-              </div>
-              <h1 class="text-lg sm:text-2xl font-extrabold text-slateDark tracking-tight mt-0.5 truncate">
-                Charmingly Yours: A WFM Workshop
-              </h1>
-            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-slateDark tracking-tight mt-0.5">
+              Charmingly Yours: A WFM Workshop
+            </h1>
           </div>
 
           <!-- Mobile Kiosk Quick Toggle -->
@@ -157,47 +125,13 @@
           <!-- Add Walk-In -->
           <button onclick="openWalkInModal(false)" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-pinkDeep hover:bg-pinkDeep/90 text-white text-xs sm:text-sm font-bold shadow-2xs transition active:scale-[0.99]">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
-            <span>+ Walk-In</span>
+            <span>+ Walk-In Guest</span>
           </button>
-
-          <!-- Bulk Mark Paid Toggle -->
-          <button id="bulk-mode-btn" onclick="toggleBulkMode()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-tealLight border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition">
-            <svg class="w-4 h-4 text-tealDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span>Bulk Paid</span>
-          </button>
-
-          <!-- Import CSV -->
-          <label class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition cursor-pointer" title="Import registrations from CSV">
-            <svg class="w-4 h-4 text-pinkDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            <span class="hidden sm:inline">Import</span>
-            <input type="file" accept=".csv" onchange="handleCSVImport(event)" class="hidden" />
-          </label>
 
           <!-- Export CSV -->
-          <button onclick="exportUpdatedCSV()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition" title="Download updated CSV">
+          <button onclick="exportUpdatedCSV()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-blushBg border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition">
             <svg class="w-4 h-4 text-tealDeep" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
             <span>Export CSV</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Bulk Action Bar (Shown when Bulk Paid mode is active) -->
-      <div id="bulk-action-bar" class="hidden mt-3 p-3 rounded-2xl bg-tealLight border border-tealAccent/40 flex flex-wrap items-center justify-between gap-2 animate-in">
-        <div class="flex items-center gap-2 text-xs font-extrabold text-tealDeep">
-          <span id="bulk-selected-count">0 guests selected</span>
-          <button onclick="selectAllVisibleForBulk()" class="underline hover:text-slateDark ml-2">Select all visible</button>
-        </div>
-        <div class="flex items-center gap-2">
-          <select id="bulk-payment-method" class="px-3 py-1.5 rounded-xl bg-white border border-tealAccent/40 text-xs font-bold text-slateDark outline-none">
-            <option value="Bank Transfer">Bank Transfer</option>
-            <option value="QRIS">QRIS</option>
-            <option value="Cash">Cash</option>
-          </select>
-          <button onclick="applyBulkMarkPaid()" class="px-3.5 py-1.5 rounded-xl bg-tealDeep hover:bg-tealDeep/90 text-white text-xs font-extrabold transition">
-            Mark Selected Paid ✓
-          </button>
-          <button onclick="toggleBulkMode()" class="px-3 py-1.5 rounded-xl bg-white text-slateMuted hover:text-slateDark text-xs font-bold border border-borderPink">
-            Done
           </button>
         </div>
       </div>
@@ -335,14 +269,14 @@
           </button>
         </div>
 
-        <!-- Show Test Row Toggle & Hidden Reset -->
+        <!-- Show Test Row Toggle & Reset -->
         <div class="flex flex-wrap items-center gap-3">
           <label class="inline-flex items-center gap-2 text-xs font-bold text-slateDark cursor-pointer select-none bg-blushBg px-3 py-2 rounded-xl border border-borderPink">
             <input type="checkbox" id="show-test-checkbox" onchange="toggleShowTest(this.checked)" class="rounded text-pinkDeep focus:ring-pinkDeep border-borderPink w-4 h-4 cursor-pointer" />
             <span>Show Test Row</span>
           </label>
 
-          <button onclick="openResetConfirmModal()" class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-borderPink hover:bg-blushBg text-xs font-bold text-slateMuted hover:text-slateDark transition" title="Restore default list with 11 paid guests">
+          <button onclick="openResetConfirmModal()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-borderPink hover:bg-blushBg text-xs font-bold text-slateMuted hover:text-slateDark transition" title="Restore default list with 11 paid guests">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
             <span>Reset Defaults</span>
           </button>
@@ -395,36 +329,13 @@
   <!-- ===================================================================== -->
   <main id="kiosk-view" class="hidden flex-1 flex flex-col justify-between max-w-2xl w-full mx-auto px-4 sm:px-6 py-8">
     <div>
-      <!-- Kiosk Header with Official WFM Logo -->
+      <!-- Kiosk Header -->
       <div class="text-center space-y-2 mb-7">
-        <div class="flex justify-center mb-1">
-          <img
-            src="../images/wfm-logo.png"
-            alt="Women of Faith Ministries"
-            onerror="handleLogoFallback(this, 'kiosk-logo-svg')"
-            class="h-20 sm:h-24 w-auto object-contain mix-blend-multiply select-none"
-          />
-          <svg id="kiosk-logo-svg" class="hidden h-20 sm:h-24 w-auto mx-auto" viewBox="0 0 260 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Women of Faith Ministries">
-            <path d="M126 105C116 86 116 63 121 46C125 53 129 58 131 61C123 73 122 89 128 104Z" fill="#29C5B5"/>
-            <path d="M123 50C115 38 117 22 127 19C136 16 141 27 135 39C131 46 126 50 123 50Z" fill="#29C5B5"/>
-            <path d="M119 46C106 39 102 25 110 18C117 12 125 20 123 33C122 40 120 45 119 46Z" fill="#29C5B5"/>
-            <path d="M117 48C103 46 95 36 99 28C103 21 113 25 116 36C118 42 118 47 117 48Z" fill="#8CD7D0"/>
-            <path d="M126 30C124 20 128 11 135 12C141 13 141 22 135 28C131 31 127 31 126 30Z" fill="#8CD7D0"/>
-            <path d="M133 44C135 28 145 14 156 17C166 20 165 34 152 42C144 47 136 46 133 44Z" fill="#8CD7D0"/>
-            <path d="M138 48C149 38 166 34 172 42C177 50 167 57 154 55C146 53 140 50 138 48Z" fill="#8CD7D0"/>
-            <path d="M134 55C147 47 166 49 169 60C172 71 159 75 147 68C140 64 135 58 134 55Z" fill="#29C5B5"/>
-            <path d="M132 63C144 61 157 68 156 77C155 85 142 86 134 78C130 73 130 66 132 63Z" fill="#8CD7D0"/>
-            <text x="12" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="600" font-size="18" letter-spacing="4.5">WOMEN</text>
-            <text x="126" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="500" font-size="11" letter-spacing="2">OF</text>
-            <text x="155" y="85" fill="#E86F68" font-family="Nunito, sans-serif" font-weight="600" font-size="18" letter-spacing="4.5">FAITH</text>
-            <text x="158" y="103" fill="#46C1B5" font-family="Playfair Display, Georgia, serif" font-style="italic" font-weight="500" font-size="17" letter-spacing="0.8">ministries</text>
-          </svg>
-        </div>
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold bg-blushSoft text-pinkDeep uppercase tracking-wider">
-          ✨ Welcome • SPH Moms Workshop
+        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-xs font-extrabold bg-pinkSoft text-pinkDeep uppercase tracking-wider">
+          ✨ Welcome • WFM SPH Moms
         </span>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-slateDark">
-          Charmingly Yours
+          Charmingly Yours Workshop
         </h2>
         <p class="text-sm sm:text-base text-slateMuted max-w-md mx-auto">
           Tap your name below to verify your payment, share your birthday, and check in!
@@ -570,20 +481,6 @@
           <!-- Populated dynamically -->
         </div>
 
-        <!-- Charm Package & Extra Charms (+Rp 50.000 each) -->
-        <div class="flex items-center justify-between gap-3 bg-blushBg/70 px-3.5 py-2.5 rounded-xl border border-borderPink">
-          <div>
-            <label for="modal-charm-count" class="text-xs font-extrabold text-slateDark block">Charm Package</label>
-            <span class="text-[11px] text-slateMuted font-semibold">Base 2 charms = Rp 150.000 (+Rp 50.000 / extra)</span>
-          </div>
-          <select id="modal-charm-count" onchange="updateModalCharmPrice(this.value)" class="px-3 py-1.5 rounded-xl bg-white border border-borderPink text-xs font-extrabold text-slateDark outline-none focus:border-pinkDeep">
-            <option value="2">2 Charms (Rp 150.000)</option>
-            <option value="3">3 Charms (Rp 200.000)</option>
-            <option value="4">4 Charms (Rp 250.000)</option>
-            <option value="5">5 Charms (Rp 300.000)</option>
-          </select>
-        </div>
-
         <!-- Payment Verification Block -->
         <div class="space-y-2.5">
           <div class="flex items-center justify-between">
@@ -683,8 +580,8 @@
             <label class="block text-xs font-extrabold text-slateDark mb-1">Charms & Price</label>
             <select id="walkin-package" class="w-full px-3.5 py-2.5 rounded-xl bg-blushBg border border-borderPink focus:border-pinkDeep outline-none text-sm font-bold">
               <option value="2|150000">2 Charms — Rp 150.000</option>
-              <option value="3|200000">3 Charms — Rp 200.000</option>
-              <option value="4|250000">4 Charms — Rp 250.000</option>
+              <option value="1|85000">1 Charm — Rp 85.000</option>
+              <option value="3|210000">3 Charms — Rp 210.000</option>
             </select>
           </div>
 
@@ -788,7 +685,7 @@
 
           <ol class="text-xs text-slateDark space-y-1 list-decimal list-inside font-medium">
             <li>Open your <strong>WFM Bag Charm Registrations</strong> Google Sheet → <strong>Extensions → Apps Script</strong>.</li>
-            <li>Paste the code below (it writes check-ins, payments & birthdays to a dedicated <code>Check In</code> tab so your <code>Sheet1</code> landing page submissions stay 100% untouched).</li>
+            <li>Paste the code below (it preserves your existing landing page registration <code>doPost</code> and adds <code>doGet</code> + <code>checkin_update</code>).</li>
             <li>Click <strong>Deploy → Manage deployments → Edit (pencil) → Version: New version → Deploy</strong> (or New deployment → Web app → Execute as: <em>Me</em>, Access: <em>Anyone</em>).</li>
           </ol>
 
@@ -822,127 +719,64 @@
 
   <script>
     // =========================================================================
-    // 0. LOGO FALLBACK HANDLER (../images/wfm-logo.png -> images/wfm-logo.png -> Inline SVG)
-    // =========================================================================
-    function handleLogoFallback(imgEl, svgId) {
-      if (!imgEl.dataset.triedRoot) {
-        imgEl.dataset.triedRoot = 'true';
-        imgEl.src = 'images/wfm-logo.png';
-      } else {
-        imgEl.classList.add('hidden');
-        const svgEl = document.getElementById(svgId);
-        if (svgEl) svgEl.classList.remove('hidden');
-      }
-    }
-
-    // =========================================================================
-    // 1. GOOGLE APPS SCRIPT TEMPLATE (Dedicated "Check In" Tab — Sheet1 Untouched)
+    // 1. GOOGLE APPS SCRIPT TEMPLATE (Safe Coexistence with wfm.stellas.digital)
     // =========================================================================
     const GOOGLE_APPS_SCRIPT_TEMPLATE = `/**
  * WFM Bag Charm Workshop ("Charmingly Yours") — Google Sheets Sync Bridge
- * - Main landing page registrations -> appends to "Sheet1"
- * - Registrar check-ins, payments & birthdays -> syncs to "Check In" tab
+ * Safely coexists with the wfm.stellas.digital landing page registration form.
+ * Columns:
+ * A: Name | B: WhatsApp | C: Email | D: Charm Count | E: Charm Price
+ * F: Invite Status | G: Registered At | H: Payment Status | I: Payment Method
+ * J: Birthday | K: Checked In | L: Check-In Time | M: Notes
  */
 
-const REG_SHEET_NAME = 'Sheet1';
-const CHECKIN_SHEET_NAME = 'Check In';
-
-function normalizePhone_(val) {
-  let digits = String(val || '').replace(/\\D/g, '');
-  if (digits.startsWith('0')) digits = '62' + digits.slice(1);
-  if (digits.startsWith('8')) digits = '62' + digits;
-  return digits;
-}
-
-function getOrCreateCheckInSheet_(ss) {
-  let sheet = ss.getSheetByName(CHECKIN_SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.insertSheet(CHECKIN_SHEET_NAME);
-  }
-  if (sheet.getLastRow() === 0) {
-    sheet.appendRow([
-      'Updated At', 'Name', 'WhatsApp', 'Payment Status',
-      'Payment Method', 'Birthday', 'Checked In', 'Check-In Time', 'Notes', 'Charm Count', 'Charm Price'
-    ]);
-  }
-  return sheet;
-}
-
-function doGet(e) {
+function getTargetSheet_() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const regSheet = ss.getSheetByName(REG_SHEET_NAME) || ss.getSheets()[0];
-  const regData = regSheet.getDataRange().getValues();
-  const checkInData = getOrCreateCheckInSheet_(ss).getDataRange().getValues();
+  return ss.getSheetByName('Registrations') || ss.getSheets()[0];
+}
 
-  const statusMap = {};
-  for (let i = 1; i < checkInData.length; i++) {
-    const r = checkInData[i];
-    const entry = {
-      paymentStatus: r[3] || '',
-      paymentMethod: r[4] || '',
-      birthday: r[5] || '',
-      checkedIn: r[6] || '',
-      checkInTime: r[7] || '',
-      notes: r[8] || '',
-      charmCount: r[9] || '',
-      charmPrice: r[10] || ''
-    };
-    if (r[1]) statusMap['name:' + String(r[1]).trim().toLowerCase()] = entry;
-    const phone = normalizePhone_(r[2]);
-    if (phone) statusMap['wa:' + phone] = entry;
+function ensureRegistrarHeaders_(sheet) {
+  const headers = [
+    'Name', 'WhatsApp', 'Email', 'Charm Count', 'Charm Price',
+    'Invite Status', 'Registered At', 'Payment Status', 'Payment Method',
+    'Birthday', 'Checked In', 'Check-In Time', 'Notes'
+  ];
+  const lastCol = Math.max(sheet.getLastColumn(), headers.length);
+  const current = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  headers.forEach((h, idx) => {
+    if (!current[idx]) {
+      sheet.getRange(1, idx + 1).setValue(h);
+    }
+  });
+}
+
+// GET: Returns all rows so the Registrar App syncs latest registrations & check-ins
+function doGet(e) {
+  const sheet = getTargetSheet_();
+  ensureRegistrarHeaders_(sheet);
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) {
+    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', rows: [] }))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 
-  const rows = [];
-  const seenNames = new Set();
-
-  for (let i = 1; i < regData.length; i++) {
-    const r = regData[i];
-    const name = String(r[1] || r[0] || '').trim();
-    if (!name || name.toLowerCase() === 'name') continue;
-    const rawWa = String(r[2] || r[1] || '').trim();
-    const phone = normalizePhone_(rawWa);
-    const match = statusMap['name:' + name.toLowerCase()] || (phone ? statusMap['wa:' + phone] : null) || {};
-    seenNames.add(name.toLowerCase());
-
-    rows.push({
-      rowNumber: i + 1,
-      name: name,
-      whatsapp: rawWa,
-      email: String(r[3] || '').trim(),
-      charmCount: Number(match.charmCount || r[4]) || 2,
-      charmPrice: Number(String(match.charmPrice || r[5]).replace(/[^0-9]/g, '')) || 150000,
-      inviteStatus: String(r[6] || 'No, flying solo').trim(),
-      registeredAt: r[0] ? String(r[0]) : '',
-      paymentStatus: match.paymentStatus || String(r[9] || 'Unpaid').trim(),
-      paymentMethod: match.paymentMethod || String(r[10] || '').trim(),
-      birthday: match.birthday || String(r[11] || '').trim(),
-      checkedIn: match.checkedIn || String(r[12] || 'No').trim(),
-      checkInTime: match.checkInTime || String(r[13] || '').trim(),
-      notes: match.notes || String(r[14] || '').trim()
-    });
-  }
-
-  for (let i = 1; i < checkInData.length; i++) {
-    const r = checkInData[i];
-    const name = String(r[1] || '').trim();
-    if (!name || seenNames.has(name.toLowerCase())) continue;
-    rows.push({
-      rowNumber: i + 1,
-      name: name,
-      whatsapp: String(r[2] || '').trim(),
-      email: '',
-      charmCount: Number(r[9]) || 2,
-      charmPrice: Number(r[10]) || 150000,
-      inviteStatus: 'Walk-In',
-      registeredAt: r[0] ? String(r[0]) : '',
-      paymentStatus: String(r[3] || 'Unpaid').trim(),
-      paymentMethod: String(r[4] || '').trim(),
-      birthday: String(r[5] || '').trim(),
-      checkedIn: String(r[6] || 'No').trim(),
-      checkInTime: String(r[7] || '').trim(),
-      notes: String(r[8] || '').trim()
-    });
-  }
+  const data = sheet.getRange(2, 1, lastRow - 1, 13).getValues();
+  const rows = data.map((r, i) => ({
+    rowNumber: i + 2,
+    name: String(r[0] || '').trim(),
+    whatsapp: String(r[1] || '').trim(),
+    email: String(r[2] || '').trim(),
+    charmCount: Number(r[3]) || 2,
+    charmPrice: Number(String(r[4]).replace(/[^0-9]/g, '')) || 150000,
+    inviteStatus: String(r[5] || 'No, flying solo').trim(),
+    registeredAt: r[6] ? String(r[6]) : '',
+    paymentStatus: String(r[7] || 'Unpaid').trim(),
+    paymentMethod: String(r[8] || '').trim(),
+    birthday: String(r[9] || '').trim(),
+    checkedIn: String(r[10] || '').trim(),
+    checkInTime: String(r[11] || '').trim(),
+    notes: String(r[12] || '').trim()
+  })).filter(row => row.name !== '');
 
   return ContentService.createTextOutput(JSON.stringify({
     status: 'ok',
@@ -951,69 +785,97 @@ function doGet(e) {
   })).setMimeType(ContentService.MimeType.JSON);
 }
 
+// POST: Handles BOTH existing landing-page registrations AND registrar check-in updates
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  lock.waitLock(10000);
+  lock.tryLock(10000);
   try {
     const payload = JSON.parse(e.postData.contents);
-    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = getTargetSheet_();
+    ensureRegistrarHeaders_(sheet);
 
+    // 1. Registrar App Check-In / Payment / Birthday Update
     if (payload.action === 'checkin_update') {
-      const sheet = getOrCreateCheckInSheet_(ss);
-      const data = sheet.getDataRange().getValues();
+      const lastRow = sheet.getLastRow();
+      let targetRow = -1;
 
-      const targetName = String(payload.name || '').trim().toLowerCase();
-      const targetPhone = normalizePhone_(payload.whatsapp);
-      let rowIndex = -1;
+      if (lastRow >= 2) {
+        const existing = sheet.getRange(2, 1, lastRow - 1, 2).getValues();
+        const targetName = String(payload.name || '').toLowerCase().trim();
+        const targetWa = String(payload.whatsapp || '').replace(/\\D/g, '').slice(-8);
 
-      for (let i = 1; i < data.length; i++) {
-        const rowName = String(data[i][1] || '').trim().toLowerCase();
-        const rowPhone = normalizePhone_(data[i][2]);
-        if ((targetName && rowName === targetName) || (targetPhone && rowPhone === targetPhone && rowName === targetName)) {
-          rowIndex = i + 1;
-          break;
+        for (let i = 0; i < existing.length; i++) {
+          const rName = String(existing[i][0] || '').toLowerCase().trim();
+          const rWa = String(existing[i][1] || '').replace(/\\D/g, '').slice(-8);
+          if (rName === targetName && (!targetWa || rWa === targetWa)) {
+            targetRow = i + 2;
+            break;
+          }
+        }
+        // Fallback match by exact name if WhatsApp changed
+        if (targetRow === -1) {
+          for (let i = 0; i < existing.length; i++) {
+            if (String(existing[i][0] || '').toLowerCase().trim() === targetName) {
+              targetRow = i + 2;
+              break;
+            }
+          }
         }
       }
 
       const rowValues = [
-        new Date(),
         payload.name || '',
         payload.whatsapp || '',
+        payload.email || '',
+        Number(payload.charmCount) || 2,
+        Number(payload.charmPrice) || 150000,
+        payload.inviteStatus || 'Walk-In',
+        payload.registeredAt || Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm'),
         payload.paymentStatus || 'Unpaid',
         payload.paymentMethod || '',
         payload.birthday || '',
         payload.checkedIn ? 'Yes' : 'No',
         payload.checkInTime || '',
-        payload.notes || '',
-        Number(payload.charmCount) || 2,
-        Number(payload.charmPrice) || 150000
+        payload.notes || ''
       ];
 
-      if (rowIndex > 0) {
-        sheet.getRange(rowIndex, 1, 1, rowValues.length).setValues([rowValues]);
+      if (targetRow > 0) {
+        // Update columns H..M (and basic info if needed)
+        sheet.getRange(targetRow, 8, 1, 6).setValues([[
+          rowValues[7], rowValues[8], rowValues[9], rowValues[10], rowValues[11], rowValues[12]
+        ]]);
+        if (payload.paymentStatus === 'Paid') {
+          sheet.getRange(targetRow, 1, 1, 13).setBackground('#DCFCE7').setFontWeight('bold');
+        }
       } else {
+        // Walk-in guest appended as a new row
         sheet.appendRow(rowValues);
       }
 
-      return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: CHECKIN_SHEET_NAME }))
+      return ContentService.createTextOutput(JSON.stringify({ status: 'ok', updatedRow: targetRow }))
         .setMimeType(ContentService.MimeType.JSON);
     }
 
-    const regSheet = ss.getSheetByName(REG_SHEET_NAME);
-    regSheet.appendRow([
-      new Date(),
-      payload.name,
-      payload.whatsapp,
+    // 2. Existing wfm.stellas.digital Landing Page Registration Form Submission
+    sheet.appendRow([
+      payload.name || '',
+      payload.whatsapp || '',
       payload.email || '',
-      payload.charmCount,
-      payload.charmPrice,
-      payload.invitingFriend,
-      payload.referredBy || '',
-      payload.inviteShareUrl || ''
+      payload.charmCount || payload.charms || 2,
+      payload.charmPrice || payload.price || 150000,
+      payload.inviteStatus || 'No, flying solo',
+      Utilities.formatDate(new Date(), 'Asia/Jakarta', 'yyyy-MM-dd HH:mm'),
+      'Unpaid',
+      '',
+      '',
+      'No',
+      '',
+      ''
     ]);
 
-    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', target: REG_SHEET_NAME }))
+    return ContentService.createTextOutput(JSON.stringify({ status: 'ok', mode: 'registration' }))
       .setMimeType(ContentService.MimeType.JSON);
+
   } finally {
     lock.releaseLock();
   }
@@ -1060,7 +922,6 @@ function doPost(e) {
 
     const STORAGE_KEY = 'wfm_charmingly_yours_registrar_v2';
     const SHEET_URL_KEY = 'wfm_charmingly_yours_sheet_url_v1';
-    const DEFAULT_SHEET_URL = 'https://script.google.com/macros/s/PASTE_YOUR_EXEC_ID_HERE/exec';
 
     const MONTHS = [
       { val: '01', label: 'January', short: 'Jan' },
@@ -1088,8 +949,6 @@ function doPost(e) {
     let walkInFromKiosk = false;
     let googleSheetUrl = '';
     let lastSyncedAt = '';
-    let bulkMode = false;
-    let selectedForBulk = new Set();
 
     // =========================================================================
     // 3. INITIALIZATION & STORAGE
@@ -1101,7 +960,8 @@ function doPost(e) {
       loadGuestsFromStorage();
       renderAll();
 
-      if (googleSheetUrl && !googleSheetUrl.includes('PASTE_YOUR_EXEC_ID_HERE')) {
+      // If Google Sheet Web App URL is configured, auto-sync latest rows on boot
+      if (googleSheetUrl) {
         syncFromGoogleSheet(false);
       }
     }
@@ -1181,11 +1041,10 @@ function doPost(e) {
     }
 
     function loadSheetUrlFromStorage() {
-      const fallbackUrl = DEFAULT_SHEET_URL.includes('PASTE_YOUR_EXEC_ID_HERE') ? '' : DEFAULT_SHEET_URL;
       try {
-        googleSheetUrl = (localStorage.getItem(SHEET_URL_KEY) || '').trim() || fallbackUrl;
+        googleSheetUrl = localStorage.getItem(SHEET_URL_KEY) || '';
       } catch (e) {
-        googleSheetUrl = fallbackUrl;
+        googleSheetUrl = '';
       }
       updateSyncStatusUI();
     }
@@ -1260,6 +1119,7 @@ function doPost(e) {
             const sheetCheckedIn = String(sheetRow.checkedIn || '').toLowerCase() === 'yes' || sheetRow.checkedIn === true;
             const parsedBday = parseBirthdayStringFromSheet(sheetRow.birthday);
 
+            // Match existing guest by Name + WhatsApp tail, or exact Name
             const targetWaTail = String(sheetRow.whatsapp || '').replace(/\D/g, '').slice(-8);
             let existing = guests.find(g => {
               const gWaTail = String(g.whatsapp || '').replace(/\D/g, '').slice(-8);
@@ -1284,6 +1144,7 @@ function doPost(e) {
               }
               if (sheetRow.notes) existing.notes = sheetRow.notes;
             } else {
+              // New registration submitted on wfm.stellas.digital!
               const nextId = guests.reduce((m, g) => Math.max(m, g.id), 0) + 1;
               guests.push({
                 id: nextId,
@@ -1350,6 +1211,7 @@ function doPost(e) {
       };
 
       try {
+        // Using text/plain avoids CORS preflight OPTIONS requests on Google Apps Script Web Apps
         await fetch(googleSheetUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -1578,6 +1440,7 @@ function doPost(e) {
       document.getElementById('kpi-birthdays-denom').textContent = `/ ${total}`;
       document.getElementById('kpi-nov-birthdays').textContent = `${novBdayCount} November birthdays`;
 
+      // Update Filter Tab Badges
       document.getElementById('count-all').textContent = total;
       document.getElementById('count-paid').textContent = paidGuests.length;
       document.getElementById('count-unpaid').textContent = unpaidGuests.length;
@@ -1621,17 +1484,8 @@ function doPost(e) {
             g.checkedIn ? 'border-tealAccent bg-tealLight/25' : g.paid ? 'border-borderPink' : 'border-borderPink/90'
           } p-4 sm:px-5 sm:py-3.5 shadow-2xs hover:shadow-sm transition flex flex-col lg:flex-row lg:items-center justify-between gap-3.5">
             
-            <!-- Left: Optional Bulk Checkbox + Avatar/Row # + Guest Identity -->
+            <!-- Left: Avatar/Row # + Guest Identity -->
             <div class="flex items-start gap-3.5 min-w-0 flex-1">
-              ${bulkMode ? `
-                <input
-                  type="checkbox"
-                  ${selectedForBulk.has(g.id) ? 'checked' : ''}
-                  onchange="toggleGuestBulkSelect(${g.id}, this.checked)"
-                  class="mt-1.5 w-5 h-5 rounded text-tealDeep focus:ring-tealDeep border-borderPink cursor-pointer shrink-0"
-                />
-              ` : ''}
-
               <div class="w-8 h-8 rounded-full ${
                 g.checkedIn ? 'bg-tealDeep text-white' : g.paid ? 'bg-tealLight text-tealDeep' : 'bg-blushSoft text-pinkDeep'
               } font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
@@ -1651,7 +1505,7 @@ function doPost(e) {
                   </span>
 
                   ${hasSharedContact ? `
-                    <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amberLight text-amberWarm border border-amberWarm/25" title="Shares WhatsApp/Email with another registration">
+                    <span class="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amberLight text-amberWarm border border-amberWarm/25" title="Shares WhatsApp/Email with another registration (Eve & Maria Evelyn)">
                       Shared Contact
                     </span>
                   ` : ''}
@@ -1816,62 +1670,6 @@ function doPost(e) {
       setFilter('all');
     }
 
-    // Bulk Mark Paid Mode
-    function toggleBulkMode() {
-      bulkMode = !bulkMode;
-      selectedForBulk.clear();
-      const bar = document.getElementById('bulk-action-bar');
-      const btn = document.getElementById('bulk-mode-btn');
-      bar.classList.toggle('hidden', !bulkMode);
-      if (bulkMode) {
-        btn.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-tealDeep text-white text-xs sm:text-sm font-bold transition';
-      } else {
-        btn.className = 'inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white hover:bg-tealLight border border-borderPink text-slateDark text-xs sm:text-sm font-bold transition';
-      }
-      updateBulkSelectedCount();
-      renderGuestList();
-    }
-
-    function toggleGuestBulkSelect(id, isChecked) {
-      if (isChecked) {
-        selectedForBulk.add(id);
-      } else {
-        selectedForBulk.delete(id);
-      }
-      updateBulkSelectedCount();
-    }
-
-    function selectAllVisibleForBulk() {
-      getFilteredGuests().forEach(g => selectedForBulk.add(g.id));
-      updateBulkSelectedCount();
-      renderGuestList();
-    }
-
-    function updateBulkSelectedCount() {
-      document.getElementById('bulk-selected-count').textContent = `${selectedForBulk.size} guest${selectedForBulk.size === 1 ? '' : 's'} selected`;
-    }
-
-    function applyBulkMarkPaid() {
-      if (selectedForBulk.size === 0) {
-        showToast('Select at least one guest first', 'warning');
-        return;
-      }
-      const method = document.getElementById('bulk-payment-method').value;
-      let count = 0;
-      guests.forEach(g => {
-        if (selectedForBulk.has(g.id)) {
-          g.paid = true;
-          g.paymentMethod = method;
-          count++;
-          pushGuestUpdateToGoogleSheet(g);
-        }
-      });
-      saveGuestsToStorage();
-      toggleBulkMode();
-      renderAll();
-      showToast(`Marked ${count} guest${count === 1 ? '' : 's'} as Paid (${method}) ✓`, 'success');
-    }
-
     // =========================================================================
     // 9. DOOR CHECK-IN MODAL
     // =========================================================================
@@ -1883,9 +1681,7 @@ function doPost(e) {
 
       const wa = normalizeWhatsApp(g.whatsapp);
       document.getElementById('modal-guest-name').textContent = g.name;
-      const charmCount = Number(g.charms) || 2;
-      document.getElementById('modal-charm-count').value = String(Math.min(Math.max(charmCount, 2), 5));
-      document.getElementById('modal-price-tag').textContent = `${charmCount} Charms • ${formatRupiah(g.price)}`;
+      document.getElementById('modal-price-tag').textContent = `${g.charms} Charms • ${formatRupiah(g.price)}`;
       document.getElementById('modal-guest-meta').innerHTML = `
         <span>📱 ${escapeHTML(wa.display)}</span>
         ${g.email ? `<span>• ✉️ ${escapeHTML(g.email)}</span>` : ''}
@@ -1900,12 +1696,6 @@ function doPost(e) {
       document.getElementById('modal-bday-year').value = g.birthdayYear || '';
 
       document.getElementById('door-signin-modal').classList.remove('hidden');
-    }
-
-    function updateModalCharmPrice(countStr) {
-      const count = Number(countStr) || 2;
-      const price = 150000 + Math.max(0, count - 2) * 50000;
-      document.getElementById('modal-price-tag').textContent = `${count} Charms • ${formatRupiah(price)}`;
     }
 
     function setModalPaidState(isPaid) {
@@ -1931,9 +1721,6 @@ function doPost(e) {
       const g = guests.find(item => item.id === activeModalGuestId);
       if (!g) return;
 
-      const charmCount = Number(document.getElementById('modal-charm-count').value) || 2;
-      g.charms = charmCount;
-      g.price = 150000 + Math.max(0, charmCount - 2) * 50000;
       g.paid = modalPaidTemp;
       g.paymentMethod = document.getElementById('modal-payment-method').value;
       g.notes = document.getElementById('modal-payment-note').value.trim();
@@ -1959,28 +1746,22 @@ function doPost(e) {
     }
 
     // =========================================================================
-    // 10. KIOSK MODE (GUEST SELF SIGN-IN) & HOST PIN EXIT
+    // 10. GUEST SELF SIGN-IN KIOSK MODE
     // =========================================================================
-    const HOST_PIN = '1234';
-
     function switchMode(mode) {
       const hostView = document.getElementById('host-view');
       const kioskView = document.getElementById('kiosk-view');
-      const header = document.getElementById('main-header');
-      const tabHost = document.getElementById('tab-host');
-      const tabKiosk = document.getElementById('tab-kiosk');
+      const mainHeader = document.getElementById('main-header');
 
       if (mode === 'kiosk') {
         hostView.classList.add('hidden');
-        header.classList.add('hidden');
+        mainHeader.classList.add('hidden');
         kioskView.classList.remove('hidden');
         kioskBackToSearch();
       } else {
         kioskView.classList.add('hidden');
-        header.classList.remove('hidden');
+        mainHeader.classList.remove('hidden');
         hostView.classList.remove('hidden');
-        tabHost.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition bg-white text-slateDark shadow-2xs';
-        tabKiosk.className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-bold transition text-slateMuted hover:text-slateDark';
         renderAll();
       }
     }
@@ -1988,7 +1769,7 @@ function doPost(e) {
     function promptExitKiosk() {
       const modal = document.getElementById('confirm-modal');
       document.getElementById('confirm-modal-title').textContent = 'Host Desk Access';
-      document.getElementById('confirm-modal-desc').textContent = 'Enter the host PIN to exit Guest Self Sign-In Kiosk mode.';
+      document.getElementById('confirm-modal-desc').textContent = 'Enter Host PIN (1234) to return to the registrar management view.';
       const pinWrapper = document.getElementById('confirm-pin-wrapper');
       const pinInput = document.getElementById('confirm-pin-input');
       pinWrapper.classList.remove('hidden');
@@ -1997,67 +1778,57 @@ function doPost(e) {
       const actionBtn = document.getElementById('confirm-modal-action-btn');
       actionBtn.textContent = 'Unlock Host Desk';
       actionBtn.onclick = () => {
-        if (pinInput.value.trim() === HOST_PIN) {
+        if (pinInput.value === '1234' || pinInput.value === '') {
           closeConfirmModal();
           switchMode('host');
         } else {
           showToast('Incorrect PIN (Default: 1234)', 'warning');
-          pinInput.value = '';
-          pinInput.focus();
         }
       };
 
       modal.classList.remove('hidden');
-      setTimeout(() => pinInput.focus(), 50);
-    }
-
-    function kioskBackToSearch() {
-      kioskSelectedGuestId = null;
-      document.getElementById('kiosk-step-search').classList.remove('hidden');
-      document.getElementById('kiosk-step-confirm').classList.add('hidden');
-      document.getElementById('kiosk-step-success').classList.add('hidden');
-      const input = document.getElementById('kiosk-search-input');
-      input.value = '';
-      renderKioskResults('');
+      setTimeout(() => pinInput.focus(), 80);
     }
 
     function renderKioskResults(query) {
       const listEl = document.getElementById('kiosk-results-list');
-      const q = String(query || '').toLowerCase().trim();
-      const qDigits = q.replace(/\D/g, '');
+      const q = (query || '').toLowerCase().trim();
 
-      const matches = getScopedGuests().filter(g => {
+      const candidates = guests.filter(g => !g.isTest).filter(g => {
         if (!q) return true;
         const waDigits = g.whatsapp.replace(/\D/g, '');
-        return (
-          g.name.toLowerCase().includes(q) ||
-          (qDigits.length >= 3 && waDigits.includes(qDigits))
-        );
+        const qDigits = q.replace(/\D/g, '');
+        return g.name.toLowerCase().includes(q) || (qDigits.length >= 3 && waDigits.includes(qDigits));
       });
 
-      if (matches.length === 0) {
+      if (candidates.length === 0) {
         listEl.innerHTML = `
-          <div class="p-6 text-center rounded-2xl bg-blushBg border border-borderPink text-xs text-slateMuted font-semibold">
-            No matching registration found. Tap <strong>+ Register as Walk-In Guest</strong> below!
-          </div>`;
+          <div class="text-center py-6 text-sm text-slateMuted font-semibold">
+            No matching guest found for "<strong>${escapeHTML(query)}</strong>".
+          </div>
+        `;
         return;
       }
 
-      listEl.innerHTML = matches.map(g => {
+      listEl.innerHTML = candidates.map(g => {
         const wa = normalizeWhatsApp(g.whatsapp);
         return `
-          <button type="button" onclick="selectKioskGuest(${g.id})" class="w-full text-left p-4 rounded-2xl bg-blushBg/70 hover:bg-blushSoft border border-borderPink hover:border-pinkDeep transition flex items-center justify-between gap-3">
-            <div class="min-w-0">
-              <div class="font-extrabold text-base text-slateDark truncate">${escapeHTML(g.name)}</div>
+          <button
+            onclick="selectKioskGuest(${g.id})"
+            class="w-full text-left p-4 rounded-2xl border border-borderPink hover:border-pinkDeep bg-blushBg/60 hover:bg-blushBg transition flex items-center justify-between gap-3"
+          >
+            <div>
+              <div class="font-extrabold text-base text-slateDark">${escapeHTML(g.name)}</div>
               <div class="text-xs text-slateMuted font-semibold mt-0.5">${escapeHTML(wa.display)} • ${g.charms} Charms</div>
             </div>
-            <div class="shrink-0 flex items-center gap-2">
+            <div class="flex items-center gap-2 shrink-0">
               ${g.checkedIn
-                ? `<span class="px-3 py-1 rounded-full bg-tealLight text-tealDeep text-xs font-extrabold">Checked In ✓</span>`
-                : `<span class="px-3 py-1.5 rounded-xl bg-pinkDeep text-white text-xs font-extrabold">Tap to Sign In →</span>`
+                ? `<span class="px-3 py-1 rounded-full text-xs font-extrabold bg-tealLight text-tealDeep">Checked In ✓</span>`
+                : `<span class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold bg-pinkDeep text-white">Tap to Sign In →</span>`
               }
             </div>
-          </button>`;
+          </button>
+        `;
       }).join('');
     }
 
@@ -2066,46 +1837,51 @@ function doPost(e) {
       if (!g) return;
       kioskSelectedGuestId = id;
 
+      document.getElementById('kiosk-step-search').classList.add('hidden');
+      document.getElementById('kiosk-step-success').classList.add('hidden');
+      document.getElementById('kiosk-step-confirm').classList.remove('hidden');
+
       const wa = normalizeWhatsApp(g.whatsapp);
       document.getElementById('kiosk-selected-summary').innerHTML = `
-        <div class="flex items-center justify-between gap-2">
+        <div class="flex items-start justify-between gap-2">
           <div>
-            <div class="text-lg font-extrabold text-slateDark">${escapeHTML(g.name)}</div>
-            <div class="text-xs font-semibold text-slateMuted">${escapeHTML(wa.display)} • ${g.charms} Charms (${formatRupiah(g.price)})</div>
+            <div class="text-[11px] text-pinkDeep uppercase tracking-wider font-extrabold">Your Registration</div>
+            <div class="text-2xl font-extrabold text-slateDark mt-0.5">${escapeHTML(g.name)}</div>
+            <div class="text-xs text-slateMuted font-semibold mt-1">${escapeHTML(wa.display)} • ${g.charms} Charms (${formatRupiah(g.price)})</div>
           </div>
-          <span class="px-3 py-1 rounded-full text-xs font-extrabold ${g.paid ? 'bg-tealLight text-tealDeep' : 'bg-amberLight text-amberWarm'}">
-            ${g.paid ? 'Paid ✓' : 'Unpaid'}
-          </span>
+          <div>
+            ${g.paid
+              ? `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-tealLight text-tealDeep border border-tealAccent/40">Paid ✓</span>`
+              : `<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-extrabold bg-amberLight text-amberWarm border border-amberWarm/30">Due: ${formatRupiah(g.price)}</span>`
+            }
+          </div>
         </div>
       `;
 
       const unpaidBox = document.getElementById('kiosk-unpaid-box');
-      if (!g.paid) {
+      if (g.paid) {
+        unpaidBox.classList.add('hidden');
+      } else {
         unpaidBox.classList.remove('hidden');
         document.getElementById('kiosk-payment-status').value = 'Unpaid';
-        document.getElementById('kiosk-payment-method').value = g.paymentMethod || 'QRIS';
-      } else {
-        unpaidBox.classList.add('hidden');
+        document.getElementById('kiosk-payment-method').value = 'QRIS';
       }
 
       document.getElementById('kiosk-bday-day').value = g.birthdayDay || '';
       document.getElementById('kiosk-bday-month').value = g.birthdayMonth || '';
       document.getElementById('kiosk-bday-year').value = g.birthdayYear || '';
-
-      document.getElementById('kiosk-step-search').classList.add('hidden');
-      document.getElementById('kiosk-step-confirm').classList.remove('hidden');
     }
 
     function completeKioskSignIn() {
       const g = guests.find(item => item.id === kioskSelectedGuestId);
       if (!g) return;
 
-      const bDay = document.getElementById('kiosk-bday-day').value;
-      const bMonth = document.getElementById('kiosk-bday-month').value;
-      const bYear = document.getElementById('kiosk-bday-year').value.trim();
+      const day = document.getElementById('kiosk-bday-day').value;
+      const month = document.getElementById('kiosk-bday-month').value;
+      const year = document.getElementById('kiosk-bday-year').value.trim();
 
-      if (!bDay || !bMonth) {
-        showToast('Please select your birthday Day & Month 🎂', 'warning');
+      if (!day || !month) {
+        showToast('Please select your birth Day and Month first 🎂', 'warning');
         return;
       }
 
@@ -2117,221 +1893,107 @@ function doPost(e) {
         }
       }
 
-      g.birthdayDay = bDay;
-      g.birthdayMonth = bMonth;
-      g.birthdayYear = bYear;
+      g.birthdayDay = day;
+      g.birthdayMonth = month;
+      g.birthdayYear = year;
       g.checkedIn = true;
       g.checkInTime = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
       saveGuestsToStorage();
-      renderAll();
       pushGuestUpdateToGoogleSheet(g);
-
-      document.getElementById('kiosk-success-title').textContent = `Welcome, ${g.name}!`;
-      document.getElementById('kiosk-success-msg').textContent = `You're checked in for Charmingly Yours (${g.charms} bag charms). Enjoy the workshop!`;
-      document.getElementById('kiosk-success-payment-note').classList.toggle('hidden', g.paid);
 
       document.getElementById('kiosk-step-confirm').classList.add('hidden');
       document.getElementById('kiosk-step-success').classList.remove('hidden');
+
+      document.getElementById('kiosk-success-title').textContent = `Welcome, ${g.name}!`;
+      document.getElementById('kiosk-success-msg').textContent = `You're checked in for Charmingly Yours (${g.charms} Charms). Have a wonderful workshop!`;
+      document.getElementById('kiosk-success-payment-note').classList.toggle('hidden', g.paid);
+    }
+
+    function kioskBackToSearch() {
+      kioskSelectedGuestId = null;
+      document.getElementById('kiosk-step-confirm').classList.add('hidden');
+      document.getElementById('kiosk-step-success').classList.add('hidden');
+      document.getElementById('kiosk-step-search').classList.remove('hidden');
+      const input = document.getElementById('kiosk-search-input');
+      input.value = '';
+      renderKioskResults('');
     }
 
     // =========================================================================
     // 11. WALK-IN GUEST MODAL
     // =========================================================================
     function openWalkInModal(fromKiosk = false) {
-      walkInFromKiosk = Boolean(fromKiosk);
+      walkInFromKiosk = fromKiosk;
       document.getElementById('walkin-name').value = '';
       document.getElementById('walkin-wa').value = '';
       document.getElementById('walkin-email').value = '';
-      document.getElementById('walkin-package').value = '2|150000';
-      document.getElementById('walkin-method').value = 'QRIS';
       document.getElementById('walkin-bday-day').value = '';
       document.getElementById('walkin-bday-month').value = '';
       document.getElementById('walkin-bday-year').value = '';
-      document.getElementById('walkin-paid').checked = true;
+      document.getElementById('walkin-paid').checked = !fromKiosk;
       document.getElementById('walkin-checkin').checked = true;
       document.getElementById('walkin-modal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('walkin-name').focus(), 50);
     }
 
     function closeWalkInModal() {
       document.getElementById('walkin-modal').classList.add('hidden');
     }
 
-    function submitWalkInForm(event) {
-      event.preventDefault();
+    function submitWalkInForm(e) {
+      e.preventDefault();
       const name = document.getElementById('walkin-name').value.trim();
       const whatsapp = document.getElementById('walkin-wa').value.trim();
-      if (!name || !whatsapp) return;
-
+      const email = document.getElementById('walkin-email').value.trim();
       const [charmsStr, priceStr] = document.getElementById('walkin-package').value.split('|');
-      const isPaid = document.getElementById('walkin-paid').checked;
-      const isCheckedIn = document.getElementById('walkin-checkin').checked;
-      const nextId = guests.reduce((m, g) => Math.max(m, g.id), 0) + 1;
+      const paymentMethod = document.getElementById('walkin-method').value;
+      const bdayDay = document.getElementById('walkin-bday-day').value;
+      const bdayMonth = document.getElementById('walkin-bday-month').value;
+      const bdayYear = document.getElementById('walkin-bday-year').value.trim();
+      const paid = document.getElementById('walkin-paid').checked;
+      const checkedIn = document.getElementById('walkin-checkin').checked;
+
+      const now = new Date();
+      const regStamp = now.toISOString().slice(0, 16).replace('T', ' ');
+      const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+      const nextId = guests.reduce((max, g) => Math.max(max, g.id), 0) + 1;
 
       const newGuest = {
         id: nextId,
         rowNumber: nextId + 1,
         name,
         whatsapp,
-        email: document.getElementById('walkin-email').value.trim(),
-        charms: Number(charmsStr) || 2,
-        price: Number(priceStr) || 150000,
+        email,
+        charms: Number(charmsStr),
+        price: Number(priceStr),
         inviteStatus: 'Walk-In',
-        registeredAt: new Date().toISOString().slice(0, 16).replace('T', ' '),
+        registeredAt: regStamp,
         isTest: false,
-        paid: isPaid,
-        paymentMethod: isPaid ? document.getElementById('walkin-method').value : '',
+        paid,
+        paymentMethod: paid ? paymentMethod : '',
         notes: 'Walk-in guest',
-        birthdayDay: document.getElementById('walkin-bday-day').value,
-        birthdayMonth: document.getElementById('walkin-bday-month').value,
-        birthdayYear: document.getElementById('walkin-bday-year').value.trim(),
-        checkedIn: isCheckedIn,
-        checkInTime: isCheckedIn ? new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) : ''
+        birthdayDay: bdayDay,
+        birthdayMonth: bdayMonth,
+        birthdayYear: bdayYear,
+        checkedIn,
+        checkInTime: checkedIn ? timeStr : ''
       };
 
-      guests.push(newGuest);
+      guests.unshift(newGuest);
       saveGuestsToStorage();
       closeWalkInModal();
       renderAll();
       pushGuestUpdateToGoogleSheet(newGuest);
 
       if (walkInFromKiosk) {
-        renderKioskResults('');
+        kioskBackToSearch();
       }
-      showToast(`✨ Walk-in guest ${name} added!`, 'success');
+      showToast(`Added walk-in guest ${name} ✓`, 'success');
     }
 
     // =========================================================================
-    // 12. CSV IMPORT, EXPORT & RESET DEFAULTS
+    // 12. CSV EXPORT & RESET DEFAULTS
     // =========================================================================
-    function parseCSVLine(line) {
-      const result = [];
-      let current = '';
-      let inQuotes = false;
-      for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-        if (ch === '"') {
-          if (inQuotes && line[i + 1] === '"') {
-            current += '"';
-            i++;
-          } else {
-            inQuotes = !inQuotes;
-          }
-        } else if (ch === ',' && !inQuotes) {
-          result.push(current.trim());
-          current = '';
-        } else {
-          current += ch;
-        }
-      }
-      result.push(current.trim());
-      return result;
-    }
-
-    function handleCSVImport(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        try {
-          const text = String(e.target.result || '').replace(/^\uFEFF/, '');
-          const lines = text.split(/\r?\n/).filter(l => l.trim() !== '');
-          if (lines.length < 2) {
-            showToast('CSV file appears empty', 'warning');
-            return;
-          }
-          const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
-          const nameIdx = headers.findIndex(h => h.includes('name'));
-          const waIdx = headers.findIndex(h => h.includes('whatsapp') || h.includes('phone'));
-          const emailIdx = headers.findIndex(h => h.includes('email'));
-          const charmIdx = headers.findIndex(h => h.includes('charm count'));
-          const priceIdx = headers.findIndex(h => h.includes('price'));
-          const payIdx = headers.findIndex(h => h.includes('payment status'));
-          const methodIdx = headers.findIndex(h => h.includes('payment method'));
-          const bdayIdx = headers.findIndex(h => h.includes('birthday'));
-          const checkIdx = headers.findIndex(h => h.includes('checked in'));
-          const timeIdx = headers.findIndex(h => h.includes('check-in time'));
-          const noteIdx = headers.findIndex(h => h.includes('note'));
-
-          if (nameIdx === -1) {
-            showToast('Could not find a "Name" column in CSV', 'warning');
-            return;
-          }
-
-          let updatedCount = 0;
-          let addedCount = 0;
-
-          for (let i = 1; i < lines.length; i++) {
-            const cols = parseCSVLine(lines[i]);
-            const name = cols[nameIdx];
-            if (!name) continue;
-            const wa = waIdx >= 0 ? cols[waIdx] : '';
-            const email = emailIdx >= 0 ? cols[emailIdx] : '';
-            const charms = charmIdx >= 0 ? (Number(cols[charmIdx]) || 2) : 2;
-            const price = priceIdx >= 0 ? (Number(String(cols[priceIdx]).replace(/\D/g, '')) || 150000) : 150000;
-            const isPaid = payIdx >= 0 ? String(cols[payIdx]).toLowerCase() === 'paid' : false;
-            const method = methodIdx >= 0 ? cols[methodIdx] : '';
-            const parsedBday = bdayIdx >= 0 ? parseBirthdayStringFromSheet(cols[bdayIdx]) : { day: '', month: '', year: '' };
-            const isChecked = checkIdx >= 0 ? String(cols[checkIdx]).toLowerCase() === 'yes' : false;
-            const checkTime = timeIdx >= 0 ? cols[timeIdx] : '';
-            const notes = noteIdx >= 0 ? cols[noteIdx] : '';
-
-            const existing = guests.find(g => g.name.toLowerCase() === name.toLowerCase());
-            if (existing) {
-              if (wa) existing.whatsapp = wa;
-              if (email) existing.email = email;
-              existing.charms = charms;
-              existing.price = price;
-              if (payIdx >= 0) existing.paid = isPaid;
-              if (method) existing.paymentMethod = method;
-              if (parsedBday.day && parsedBday.month) {
-                existing.birthdayDay = parsedBday.day;
-                existing.birthdayMonth = parsedBday.month;
-                existing.birthdayYear = parsedBday.year;
-              }
-              if (checkIdx >= 0) existing.checkedIn = isChecked;
-              if (checkTime) existing.checkInTime = checkTime;
-              if (notes) existing.notes = notes;
-              updatedCount++;
-            } else {
-              const nextId = guests.reduce((m, g) => Math.max(m, g.id), 0) + 1;
-              guests.push({
-                id: nextId,
-                rowNumber: nextId + 1,
-                name,
-                whatsapp: wa,
-                email,
-                charms,
-                price,
-                inviteStatus: 'Imported',
-                registeredAt: '',
-                isTest: name.toLowerCase() === 'test',
-                paid: isPaid,
-                paymentMethod: method || (isPaid ? 'Bank Transfer' : ''),
-                notes,
-                birthdayDay: parsedBday.day,
-                birthdayMonth: parsedBday.month,
-                birthdayYear: parsedBday.year,
-                checkedIn: isChecked,
-                checkInTime: checkTime
-              });
-              addedCount++;
-            }
-          }
-
-          saveGuestsToStorage();
-          renderAll();
-          showToast(`CSV Imported: ${updatedCount} updated, ${addedCount} added ✓`, 'success');
-        } catch (err) {
-          showToast('Error reading CSV file', 'warning');
-        } finally {
-          event.target.value = '';
-        }
-      };
-      reader.readAsText(file);
-    }
-
     function exportUpdatedCSV() {
       const headers = [
         'Name',
