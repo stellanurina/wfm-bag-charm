@@ -123,6 +123,20 @@
     .ps-walkin td { height: 26px; }
     .ps-foot { margin-top: 10px; font-size: 8pt; color: #94A3B8; display: flex; justify-content: space-between; }
   </style>
+  <script>
+    // Logo fallback: ../images/wfm-logo.png -> images/wfm-logo.png -> inline SVG.
+    // Defined here (not at the bottom) because a missing image can fail before the page finishes loading.
+    function handleLogoFallback(imgEl, svgId) {
+      if (!imgEl.dataset.triedRoot) {
+        imgEl.dataset.triedRoot = 'true';
+        imgEl.src = 'images/wfm-logo.png';
+      } else {
+        imgEl.classList.add('hidden');
+        const show = () => { const svgEl = document.getElementById(svgId); if (svgEl) svgEl.classList.remove('hidden'); };
+        if (document.getElementById(svgId)) show(); else document.addEventListener('DOMContentLoaded', show);
+      }
+    }
+  </script>
 </head>
 <body class="min-h-screen flex flex-col selection:bg-pinkPrimary/40 selection:text-slateDark">
 
@@ -1113,7 +1127,9 @@ function doPost(e) {
 
         // Never wipe real sheet data with an empty value from the site
         const birthday = incomingBirthday || birthdayText_(current[COL.BDAY - 1]);
-        const notes = incomingNotes || text_(current[COL.NOTES - 1]);
+        // The page sends notesFinal: true once it has the sheet's notes loaded, so it can clear
+        // a note (e.g. the "collect at desk" reminder once she pays). Older pages can't wipe notes.
+        const notes = payload.notesFinal === true ? incomingNotes : (incomingNotes || text_(current[COL.NOTES - 1]));
         const payMethod = isPaid ? (incomingMethod || text_(current[COL.METHOD - 1])) : '';
 
         setTextFormats_(sheet, rowIndex);
@@ -1190,16 +1206,7 @@ function doPost(e) {
     // =========================================================================
     // 0. LOGO FALLBACK HANDLER (../images/wfm-logo.png -> images/wfm-logo.png -> Inline SVG)
     // =========================================================================
-    function handleLogoFallback(imgEl, svgId) {
-      if (!imgEl.dataset.triedRoot) {
-        imgEl.dataset.triedRoot = 'true';
-        imgEl.src = 'images/wfm-logo.png';
-      } else {
-        imgEl.classList.add('hidden');
-        const svgEl = document.getElementById(svgId);
-        if (svgEl) svgEl.classList.remove('hidden');
-      }
-    }
+    // handleLogoFallback() is defined in <head> so it exists before the logo images load
 
     // =========================================================================
     // 1. GOOGLE APPS SCRIPT TEMPLATE (Dedicated "Check In" Tab — Sheet1 Untouched)
@@ -1594,7 +1601,8 @@ function doPost(e) {
         birthday: formatBirthdayDisplay(guest),
         checkedIn: guest.checkedIn,
         checkInTime: guest.checkInTime || '',
-        notes: guest.notes || ''
+        notes: guest.notes || '',
+        notesFinal: true
       };
     }
 
